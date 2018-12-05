@@ -10,6 +10,7 @@ body {
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding-top:15px;
 }
 
 /* Carousel */
@@ -26,6 +27,21 @@ body {
 /* QR code generator */
 #qrCode {
     margin: 15px;
+}
+
+.btn-header {
+    display: block;
+    position: relative;
+    padding: 15px 15px;
+    background-color: transparent;
+    border-color: transparent;
+    color: #9d9d9d;
+}
+
+.btn-header-pos {
+    display: block;
+    position: relative;
+    padding: 15px 15px;
 }
 
 /* Hide/rearrange for smaller screens */

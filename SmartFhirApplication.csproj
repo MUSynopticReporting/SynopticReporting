@@ -5,8 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Home\Asdf.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Templates\Asdf.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="iTextSharp" Version="5.5.13" />
+    <PackageReference Include="jQuery" Version="3.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
 
 </Project>

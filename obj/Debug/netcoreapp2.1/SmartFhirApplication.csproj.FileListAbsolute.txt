@@ -31,3 +31,8 @@ C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\
 C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\netcoreapp2.1\SmartFhirApplication.pdb
 C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\netcoreapp2.1\SmartFhirApplication.csproj.CopyComplete
 C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\netcoreapp2.1\Razor\Views\Home\launch.g.cshtml.cs
+C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\netcoreapp2.1\Razor\Views\Templates\0000029.g.cshtml.cs
+C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\netcoreapp2.1\Razor\Views\Templates\Asdf.g.cshtml.cs
+C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\netcoreapp2.1\Razor\Views\Templates\Nineteen.g.cshtml.cs
+C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\netcoreapp2.1\Razor\Views\Templates\Sixteen.g.cshtml.cs
+C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\netcoreapp2.1\Razor\Views\Templates\0000236.g.cshtml.cs

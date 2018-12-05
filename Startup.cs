@@ -54,9 +54,10 @@ namespace SmartFhirApplication
 
       app.UseMvc(routes =>
       {
-        routes.MapRoute(
-                  name: "default",
-                  template: "{controller=Home}/{action=Index}/{id?}");
+
+        routes.MapRoute("SmartonFHIR", "SmartonFHIR/{*article}",
+         defaults: new { controller = "SmartonFHIR", action = "GetDiagnosticReports" });
+        routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
       });
     }
   }
