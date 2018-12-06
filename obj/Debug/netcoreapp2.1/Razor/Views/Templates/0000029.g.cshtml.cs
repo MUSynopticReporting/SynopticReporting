@@ -54,7 +54,7 @@ using SmartFhirApplication.Models;
             WriteLiteral("<!DOCTYPE html>\n<html>\n");
             EndContext();
             BeginContext(23, 4410, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "95184f98e8c449819bb795c7151640c7", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "7d2c9fe16a534dca8dcdd1eb5ef26c98", async() => {
                 BeginContext(29, 4397, true);
                 WriteLiteral(@"
 <meta charset=""UTF-8""/>
@@ -228,7 +228,7 @@ using SmartFhirApplication.Models;
             WriteLiteral("\n");
             EndContext();
             BeginContext(4434, 3578, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "d0dbbf8465684c8ab9b616d08456ca13", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b292926e928a4764a2fc49a66684d758", async() => {
                 BeginContext(4440, 3565, true);
                 WriteLiteral(@"
 <section data-section-name=""Procedure"">

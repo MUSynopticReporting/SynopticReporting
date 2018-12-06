@@ -5,16 +5,21 @@
 $(document).ready(function () {
     var impressionNode = $('section[data-section-name="Impression"]');
     var URL = "/FHIR/GetDiagnosticReport/";
+    var procedureNode = $('section[data-section-name="Procedure"]');
     if (impressionNode.length > 0) {
         $.ajax({
             url: URL,
             type: 'GET',
             data: {
-                AccessionId: "a819497684894126"
+                AccessionId: "a819497684894126",
+                Title: procedureNode.children()[0].innerHTML
+
             },
             success: function (data) {
                 console.log(data);
-                impressionNode.children()[1].children.Impression.value = data.conclusion.split(': ')[1];
+                if (data != null) {
+                    impressionNode.children()[1].children.Impression.value = data.conclusion.split(': ')[1];
+                }
             },
             error: function (data) {
                 console.log(data);

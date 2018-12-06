@@ -130,7 +130,7 @@ namespace SmartFhirApplication.Controllers
     private static string text { get; set; }
 
 
-    public JsonResult GetDiagnosticReport(string AccessionId)
+    public JsonResult GetDiagnosticReport(string AccessionId, string Title)
     {
       string URL = "http://hackathon.siim.org/fhir/DiagnosticReport/" + AccessionId;
       HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
@@ -160,7 +160,14 @@ namespace SmartFhirApplication.Controllers
       //Trace.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
       Console.WriteLine(RO.conclusion);
       response.Close();
-      return Json(RO);
+      if (Title.Equals(RO.code.text))
+      {
+        return Json(RO);
+      }
+      else
+      {
+        return Json(null);
+      }
     }
   }
 }
