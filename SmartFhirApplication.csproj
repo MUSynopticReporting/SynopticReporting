@@ -9,6 +9,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\Templates\0000029.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Templates\0000029.html">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Views\Templates\Asdf.cshtml" />
   </ItemGroup>
 
@@ -16,6 +26,7 @@
     <PackageReference Include="CsvHelper" Version="12.0.1" />
     <PackageReference Include="iTextSharp" Version="5.5.13" />
     <PackageReference Include="jQuery" Version="3.3.1" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />

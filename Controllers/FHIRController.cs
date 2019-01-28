@@ -125,7 +125,7 @@ namespace SmartFhirApplication.Controllers
             return View();
         }
 
-    private const string apikey = "f64cabaa-6baf-48aa-b1ed-7857813c5c07";
+    private const string apikey = "REPLACE W// KEY";
     public string responseText;
     private static string text { get; set; }
 

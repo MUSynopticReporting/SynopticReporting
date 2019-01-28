@@ -44,19 +44,19 @@ $("#submit").click(function (e) {
     for (var i = 1; i < procedureNode.children().length; i++) {
         var procedureId = procedureNode.children()[i].lastElementChild.id;
         console.log(procedureNode.children()[i].lastElementChild.name + ": " + document.getElementById(procedureId).value);
-        procedure.push(procedureNode.children()[i].lastElementChild.name + ": " + document.getElementById(procedureId).value)
+        procedure.push([procedureNode.children()[i].lastElementChild.name + ": " + document.getElementById(procedureId).value, procedureNode.children()[i].lastElementChild.id])
     }
     var clinicalNode = $('section[data-section-name="Clinical information"]');
     for (var i = 1; i < clinicalNode.children().length; i++) {
         var clinicalId = clinicalNode.children()[i].lastElementChild.id;
         console.log(clinicalNode.children()[i].lastElementChild.name + ": " + document.getElementById(clinicalId).value);
-        clinical.push(clinicalNode.children()[i].lastElementChild.name + ": " + document.getElementById(clinicalId).value)
+        clinical.push([clinicalNode.children()[i].lastElementChild.name + ": " + document.getElementById(clinicalId).value, clinicalNode.children()[i].lastElementChild.id])
     }
     var comparisonNode = $('section[data-section-name="Comparison"]');
     for (var i = 1; i < comparisonNode.children().length; i++) {
         var comparisonId = comparisonNode.children()[i].lastElementChild.id;
         console.log(comparisonNode.children()[i].lastElementChild.name + ": " + document.getElementById(comparisonId).value);
-        comparison.push(comparisonNode.children()[i].lastElementChild.name + ": " + document.getElementById(comparisonId).value)
+        comparison.push([comparisonNode.children()[i].lastElementChild.name + ": " + document.getElementById(comparisonId).value, comparisonNode.children()[i].lastElementChild.id])
     }
     // Maybe just naively assume each first level child is going to be its own section?
     // Deal with this garbage next semester lol
@@ -73,12 +73,12 @@ $("#submit").click(function (e) {
                     if (currentFinding.tagName == "INPUT") {
                         //Check if innerText does not contain a colon, if so then append during controller call
                         //Also add a section for units: If children[k + 1] is defined and part of a list of units, append to end
-                        console.log((i - 1) + " " + findingsSection.children[j].children[k - 1].innerText + " " + document.getElementById(currentFinding.id).value);
+                        console.log((i - 1) + " " + findingsSection.children[j].children[k - 1].innerText + " " + document.getElementById(currentFinding.id).value + " " + (currentFinding.id));
                         if ((k + 1 < findingsSection.children[j].childElementCount) && isUnit(findingsSection.children[j].children[k + 1].innerText)) {
                             //console.log("Unit = " + findingsSection.children[j].children[k + 1].innerText);
-                            tempList.push(findingsSection.children[j].children[k - 1].innerText + " " + document.getElementById(currentFinding.id).value + " " + findingsSection.children[j].children[k + 1].innerText);
+                            tempList.push([findingsSection.children[j].children[k - 1].innerText + " " + document.getElementById(currentFinding.id).value + " " + findingsSection.children[j].children[k + 1].innerText, currentFinding.id]);
                         } else {
-                            tempList.push(findingsSection.children[j].children[k - 1].innerText + " " + document.getElementById(currentFinding.id).value);
+                            tempList.push([findingsSection.children[j].children[k - 1].innerText + " " + document.getElementById(currentFinding.id).value, currentFinding.id]);
                         }
 
                         //Check if matchesUnitList(findingsSection.children[j].children[k + 1]) is true, if so append to end
@@ -86,7 +86,7 @@ $("#submit").click(function (e) {
                     } else if (findingsSection.children[j].lastElementChild.tagName == "TEXTAREA") {
                         console.log("K is: " + k);
                         console.log(findingsSection);
-                        tempList.push(findingsSection.children[0].textContent + ": " + findingsSection.children[j].lastElementChild.value)
+                        tempList.push([findingsSection.children[0].textContent + ": " + findingsSection.children[j].lastElementChild.value, currentFinding.id])
                     }
                 }
             } else {
@@ -95,19 +95,19 @@ $("#submit").click(function (e) {
                 if (currentFinding.tagName == "INPUT") {
                     //Check if innerText does not contain a colon, if so then append during controller call
                     //Also add a section for units: If children[k + 1] is defined and part of a list of units, append to end
-                    console.log((i - 1) + " " + findingsSection.children[j - 1].innerText + " " + document.getElementById(currentFinding.id).value);
+                    console.log((i - 1) + " " + findingsSection.children[j - 1].innerText + " " + document.getElementById(currentFinding.id).value + " " + (currentFinding.id));
                     if ((j + 1 < findingsSection.childElementCount) && isUnit(findingsSection.children[j + 1].innerText)) {
                         //console.log("Unit = " + findingsSection.children[j].children[k + 1].innerText);
-                        tempList.push(findingsSection.children[j - 1].innerText + " " + document.getElementById(currentFinding.id).value + " " + findingsSection.children[j + 1].innerText);
+                        tempList.push([findingsSection.children[j - 1].innerText + " " + document.getElementById(currentFinding.id).value + " " + findingsSection.children[j + 1].innerText, currentFinding.id]);
                     } else {
-                        tempList.push(findingsSection.children[j - 1].innerText + " " + document.getElementById(currentFinding.id).value);
+                        tempList.push([findingsSection.children[j - 1].innerText + " " + document.getElementById(currentFinding.id).value, currentFinding.id]);
                     }
 
                     //Check if matchesUnitList(findingsSection.children[j].children[k + 1]) is true, if so append to end
 
                 } else if (findingsSection.children[j].lastElementChild.tagName == "TEXTAREA") {
                     console.log(findingsSection);
-                    tempList.push(findingsSection.children[0].textContent + ": " + findingsSection.children[j].lastElementChild.value)
+                    tempList.push([findingsSection.children[0].textContent + ": " + findingsSection.children[j].lastElementChild.value, currentFinding.id])
                 }
             }
         }
@@ -117,12 +117,13 @@ $("#submit").click(function (e) {
     for (var i = 1; i < impressionNode.children().length; i++) {
         var impressionId = impressionNode.children()[i].lastElementChild.id;
         console.log(impressionNode.children()[i].lastElementChild.name + ": " + document.getElementById(impressionId).value);
-        impression.push(impressionNode.children()[i].lastElementChild.name + ": " + document.getElementById(impressionId).value)
+        impression.push([impressionNode.children()[i].lastElementChild.name + ": " + document.getElementById(impressionId).value, impressionNode.children()[i].lastElementChild.id])
     }
     $.ajax({
         url: multi ? 'Create' : 'CreateSingle',
         type: 'POST',
         data: {
+            Location: window.location.href,
             title: title,
             Procedure: procedure,
             ClinicalInformation: clinical,

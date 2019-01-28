@@ -80,7 +80,7 @@ using SmartFhirApplication.Models;
             WriteLiteral("<!DOCTYPE html>\n<html>\n");
             EndContext();
             BeginContext(23, 4299, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "5ff22b7e326248dbacbc886fca51d317", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "f5b7b09aac4b4be98c569b3ef7583e05", async() => {
                 BeginContext(29, 871, true);
                 WriteLiteral(@"
 <meta charset=""UTF-8""/>
@@ -99,7 +99,7 @@ using SmartFhirApplication.Models;
 ");
                 EndContext();
                 BeginContext(900, 77, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "bb8bed3367bf47f3b4af0b05d5f336a4", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "3c86ea46fff642cf85a08e7357c44efc", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -263,7 +263,7 @@ using SmartFhirApplication.Models;
             WriteLiteral("\n");
             EndContext();
             BeginContext(4323, 3738, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "f7bb71e779a04647aee308689c508289", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "6115f0cb4f774df5b3ec65f566b28abb", async() => {
                 BeginContext(4329, 1527, true);
                 WriteLiteral(@"
 <section data-section-name=""Procedure"">
@@ -312,7 +312,7 @@ using SmartFhirApplication.Models;
 ");
                 EndContext();
                 BeginContext(5856, 79, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "580277bf8ef9424fa1f21ebd8a5fd3ab", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "68fd07e055044cc681d428b3dc08d062", async() => {
                     BeginContext(5916, 10, true);
                     WriteLiteral("Spiculated");
                     EndContext();
@@ -336,7 +336,7 @@ using SmartFhirApplication.Models;
                 WriteLiteral("\n");
                 EndContext();
                 BeginContext(5936, 64, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "d4132a59196a4ebcb3df1eb1974ef255", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "2a02b97333f04615b191af35cc01182f", async() => {
                     BeginContext(5986, 5, true);
                     WriteLiteral("Round");
                     EndContext();
@@ -360,7 +360,7 @@ using SmartFhirApplication.Models;
                 WriteLiteral("\n");
                 EndContext();
                 BeginContext(6001, 106, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "84622af4dad0478fbe9dd3726df90292", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "63f863d4cb55475497ea203cee9bc956", async() => {
                     BeginContext(6079, 19, true);
                     WriteLiteral("Smoothly marginated");
                     EndContext();
@@ -384,7 +384,7 @@ using SmartFhirApplication.Models;
                 WriteLiteral("\n</select>\n</p>\n<p>\n<label for=\"T16_50\">Internal consistency:</label>\n<select id=\"T16_50\" name=\"Internal consistency\">\n");
                 EndContext();
                 BeginContext(6226, 106, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "fd96ba1580814dadafbf9e60b58f254c", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "2a7f5e3ee4c841709f2797eb4bc5f4bf", async() => {
                     BeginContext(6304, 19, true);
                     WriteLiteral("Centrally calcified");
                     EndContext();
@@ -408,7 +408,7 @@ using SmartFhirApplication.Models;
                 WriteLiteral("\n");
                 EndContext();
                 BeginContext(6333, 115, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cf0b68b0f28644e4a4cb16e3af6ac774", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "dfaad98d43734f4794d161748213a270", async() => {
                     BeginContext(6417, 22, true);
                     WriteLiteral("Peripherally calcified");
                     EndContext();
@@ -432,7 +432,7 @@ using SmartFhirApplication.Models;
                 WriteLiteral("\n");
                 EndContext();
                 BeginContext(6449, 85, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "6e853b173fa4469681c8f4ebbe8e55e8", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "2711af3112c24b9c8a87deae90ad3f7d", async() => {
                     BeginContext(6513, 12, true);
                     WriteLiteral("Ground glass");
                     EndContext();
@@ -456,7 +456,7 @@ using SmartFhirApplication.Models;
                 WriteLiteral("\n");
                 EndContext();
                 BeginContext(6535, 64, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "f25d9585f07d479f83b80518fb8a77c0", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "178f96f68a4340229a5e44e6419cbf8b", async() => {
                     BeginContext(6585, 5, true);
                     WriteLiteral("Fatty");
                     EndContext();

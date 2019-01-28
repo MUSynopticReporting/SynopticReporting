@@ -11,47 +11,23 @@ using iTextSharp.text.pdf;
 
 namespace SmartFhirApplication.Controllers
 {
-  public class HomeController : Controller
+  public class HomeController : Microsoft.AspNetCore.Mvc.Controller
   {
     public IActionResult Index()
     {
       return View();
     }
 
-    public IActionResult About()
-    {
-      ViewData["Message"] = "Your application description page.";
-
-      return View();
-    }
-
-    public IActionResult Contact()
-    {
-      ViewData["Message"] = "Your contact page.";
-
-      return View();
-    }
-
-    public IActionResult Privacy()
-    {
-      return View();
-    }
     public IActionResult Launch()
     {
       return View();
     }
     public IActionResult LoadTemplate(string path)
     {
-       return View("~/Views/Templates/"+path+".cshtml");
-     // return View("Views/home/Contact.cshtml");
-    }
-    public IActionResult Nineteen()
-    {
-      return View();
-    }
-    public IActionResult Sixteen()
-    {
-      return View();
+      //var whatever = @Html.Raw(File.ReadAllText(Server.MapPath("~/Views/Home/_TSCalendar.html")));
+      //return View("~/Views/Templates/" + path + ".html", "text/html");
+        return View("~/Views/Templates/" + path + ".cshtml");
+      // return View("Views/home/Contact.cshtml");
     }
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
@@ -60,11 +36,25 @@ namespace SmartFhirApplication.Controllers
     }
 
     public void CreateSingle(string title,
-                       List<string> Procedure,
-                       List<string> ClinicalInformation,
-                       List<string> Comparison,
-                       List<string> Findings,
-                       List<string> Impression,
+                       List<List<string>> Procedure,
+                       List<List<string>> ClinicalInformation,
+                       List<List<string>> Comparison,
+                       List<List<string>> Findings,
+                       List<List<string>> Impression,
+                       List<string> FindingsList,
+                       string Location)
+    {
+      var path = Location.Substring(Location.LastIndexOf('=') + 1);
+      var MappedCodes = RetreiveFirstCode(path);
+      PDFSingle(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, FindingsList);
+    }
+
+    public void PDFSingle(string title,
+                       List<List<string>> Procedure,
+                       List<List<string>> ClinicalInformation,
+                       List<List<string>> Comparison,
+                       List<List<string>> Findings,
+                       List<List<string>> Impression,
                        List<string> FindingsList)
     {
       using (FileStream fs = new FileStream(
@@ -77,10 +67,10 @@ namespace SmartFhirApplication.Controllers
         var SubtitleFont = new Font(Font.FontFamily.COURIER, 14f, Font.NORMAL);
         doc.Open();
         Paragraph titleParagraph = new Paragraph(title, TitleFont);
-        Paragraph procedureParagraph = new Paragraph(Procedure[0], DefaultFont);
-        Paragraph ciParagraph = new Paragraph(ClinicalInformation[0], DefaultFont);
-        Paragraph comparisonParagraph = new Paragraph(Comparison[0], DefaultFont);
-        Paragraph impressionParagraph = new Paragraph(Impression[0], DefaultFont);
+        Paragraph procedureParagraph = new Paragraph(Procedure[0][0], DefaultFont);
+        Paragraph ciParagraph = new Paragraph(ClinicalInformation[0][0], DefaultFont);
+        Paragraph comparisonParagraph = new Paragraph(Comparison[0][0], DefaultFont);
+        Paragraph impressionParagraph = new Paragraph(Impression[0][0], DefaultFont);
         Paragraph findingsParagraph = new Paragraph("Findings:", DefaultFont);
         // Setting paragraph's text alignment using iTextSharp.text.Element class
         titleParagraph.Alignment = Element.ALIGN_CENTER;
@@ -112,13 +102,13 @@ namespace SmartFhirApplication.Controllers
           var index = Findings[j].IndexOf(": ");
           if (index != -1)
           {
-            table.AddCell(Findings[j].Substring(0, index));
-            table.AddCell(Findings[j].Substring(index + 2));
+            table.AddCell(Findings[j][0].Substring(0, index));
+            table.AddCell(Findings[j][0].Substring(index + 2));
           }
           else
           {
             table.AddCell("");
-            table.AddCell(Findings[j]);
+            table.AddCell(Findings[j][0]);
           }
 
         }
@@ -138,12 +128,25 @@ namespace SmartFhirApplication.Controllers
 
     }
 
+
+
     public void Create(string title,
-                       List<string> Procedure,
-                       List<string> ClinicalInformation,
-                       List<string> Comparison,
-                       List<List<string>> Findings,
-                       List<string> Impression,
+                       List<List<string>> Procedure,
+                       List<List<string>> ClinicalInformation,
+                       List<List<string>> Comparison,
+                       List<List<List<string>>> Findings,
+                       List<List<string>> Impression,
+                       List<string> FindingsList,
+                       string Location)
+    {
+      CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, FindingsList);
+    }
+    public void CreatePDF(string title,
+                       List<List<string>> Procedure,
+                       List<List<string>> ClinicalInformation,
+                       List<List<string>> Comparison,
+                       List<List<List<string>>> Findings,
+                       List<List<string>> Impression,
                        List<string> FindingsList)
     {
 
@@ -157,10 +160,10 @@ namespace SmartFhirApplication.Controllers
         var SubtitleFont = new Font(Font.FontFamily.COURIER, 14f, Font.NORMAL);
         doc.Open();
         Paragraph titleParagraph = new Paragraph(title, TitleFont);
-        Paragraph procedureParagraph = new Paragraph(Procedure[0], DefaultFont);
-        Paragraph ciParagraph = new Paragraph(ClinicalInformation[0], DefaultFont);
-        Paragraph comparisonParagraph = new Paragraph(Comparison[0], DefaultFont);
-        Paragraph impressionParagraph = new Paragraph(Impression[0], DefaultFont);
+        Paragraph procedureParagraph = new Paragraph(Procedure[0][0], DefaultFont);
+        Paragraph ciParagraph = new Paragraph(ClinicalInformation[0][0], DefaultFont);
+        Paragraph comparisonParagraph = new Paragraph(Comparison[0][0], DefaultFont);
+        Paragraph impressionParagraph = new Paragraph(Impression[0][0], DefaultFont);
         Paragraph findingsParagraph = new Paragraph("Findings:", DefaultFont);
         // Setting paragraph's text alignment using iTextSharp.text.Element class
         titleParagraph.Alignment = Element.ALIGN_CENTER;
@@ -191,16 +194,17 @@ namespace SmartFhirApplication.Controllers
           table.AddCell(fin);
           for (int j = 0; j < Findings[i].Count; j++)
           {
-            var index = Findings[i][j].IndexOf(": ");
+            var find = Findings[i][j][0];
+            var index = find.IndexOf(": ");
             if (index != -1)
             {
-              table.AddCell(Findings[i][j].Substring(0, index));
-              table.AddCell(Findings[i][j].Substring(index + 2));
+              table.AddCell(find.Substring(0, index));
+              table.AddCell(find.Substring(index + 2));
             }
             else
             {
               table.AddCell("");
-              table.AddCell(Findings[i][j]);
+              table.AddCell(find);
             }
 
           }
@@ -220,6 +224,63 @@ namespace SmartFhirApplication.Controllers
       // Response.Redirect("~/results/test.pdf");
 
 
+    }
+
+    /// <summary>
+    /// RetreiveFirstCode: string -> List of (string, string, string)
+    /// Takes in the string path of a file and extracts the Radlex codes and names associated with them
+    /// Where List[0] = Code List[1] = String List[2] = ID found in HTML
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    List<(string, string, string)> RetreiveFirstCode(string path)
+    {
+      string workingDirectory = Environment.CurrentDirectory;
+      string URL = workingDirectory + "/Views/Templates/" + path + ".cshtml";
+      List<string> allLines = new List<string>(System.IO.File.ReadAllLines(URL));
+      var usefulLines = new List<(string, string, string)>();
+      for (int i = 0; i < allLines.Count; i++)
+      {
+        string line = allLines[i];
+        if (line.Contains("//template_attributes"))
+        {
+          break;
+        }
+        else if (line.Contains("code meaning") && allLines[i - 2].Contains("ORIGTXT"))
+        {
+          usefulLines.Add((Between(line, "value=\"", "\""), Between(line, "meaning=\"", "\""), Between(allLines[i - 2], "ORIGTXT=\"", "\"")));
+          Console.WriteLine(line);
+        }
+      }
+
+      for (int i = 0; i < usefulLines.Count; i++)
+      {
+        Console.WriteLine(usefulLines[i]);
+      }
+      return usefulLines;
+    }
+
+    /// <summary>
+    /// Get string value between [first] a and [last] b.
+    /// </summary>
+    private string Between(string value, string a, string b)
+    {
+      int posA = value.IndexOf(a);
+      int posB = value.IndexOf(b, posA + a.Length);
+      if (posA == -1)
+      {
+        return "";
+      }
+      if (posB == -1)
+      {
+        return "";
+      }
+      int adjustedPosA = posA + a.Length;
+      if (adjustedPosA >= posB)
+      {
+        return "";
+      }
+      return value.Substring(adjustedPosA, posB - adjustedPosA);
     }
   }
 }
