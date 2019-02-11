@@ -2,8 +2,6 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SmartFhirApplication.Models;
 using iTextSharp.text;
@@ -35,19 +33,6 @@ namespace SmartFhirApplication.Controllers
       return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    public void CreateSingle(string title,
-                       List<List<string>> Procedure,
-                       List<List<string>> ClinicalInformation,
-                       List<List<string>> Comparison,
-                       List<List<string>> Findings,
-                       List<List<string>> Impression,
-                       List<string> FindingsList,
-                       string Location)
-    {
-      var path = Location.Substring(Location.LastIndexOf('=') + 1);
-      var MappedCodes = RetreiveFirstCode(path);
-      PDFSingle(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, FindingsList);
-    }
 
     public void PDFSingle(string title,
                        List<List<string>> Procedure,
@@ -131,22 +116,23 @@ namespace SmartFhirApplication.Controllers
 
 
     public void Create(string title,
-                       List<List<string>> Procedure,
-                       List<List<string>> ClinicalInformation,
-                       List<List<string>> Comparison,
-                       List<List<List<string>>> Findings,
-                       List<List<string>> Impression,
+                       TemplateViewModel Procedure,
+                       TemplateViewModel ClinicalInformation,
+                       TemplateViewModel Comparison,
+                       TemplateViewModel Findings,
+                       TemplateViewModel Impression,
                        List<string> FindingsList,
                        string Location)
     {
       CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, FindingsList);
+
     }
     public void CreatePDF(string title,
-                       List<List<string>> Procedure,
-                       List<List<string>> ClinicalInformation,
-                       List<List<string>> Comparison,
-                       List<List<List<string>>> Findings,
-                       List<List<string>> Impression,
+                       TemplateViewModel Procedure,
+                       TemplateViewModel ClinicalInformation,
+                       TemplateViewModel Comparison,
+                       TemplateViewModel Findings,
+                       TemplateViewModel Impression,
                        List<string> FindingsList)
     {
 
@@ -160,11 +146,11 @@ namespace SmartFhirApplication.Controllers
         var SubtitleFont = new Font(Font.FontFamily.COURIER, 14f, Font.NORMAL);
         doc.Open();
         Paragraph titleParagraph = new Paragraph(title, TitleFont);
-        Paragraph procedureParagraph = new Paragraph(Procedure[0][0], DefaultFont);
-        Paragraph ciParagraph = new Paragraph(ClinicalInformation[0][0], DefaultFont);
-        Paragraph comparisonParagraph = new Paragraph(Comparison[0][0], DefaultFont);
-        Paragraph impressionParagraph = new Paragraph(Impression[0][0], DefaultFont);
-        Paragraph findingsParagraph = new Paragraph("Findings:", DefaultFont);
+        Paragraph procedureParagraph = ParagraphConstruct(Procedure);
+        Paragraph ciParagraph = ParagraphConstruct(ClinicalInformation);
+        Paragraph comparisonParagraph = ParagraphConstruct(Comparison);
+        Paragraph impressionParagraph = ParagraphConstruct(Impression);
+        Paragraph findingsParagraph = ParagraphConstruct(Findings);
         // Setting paragraph's text alignment using iTextSharp.text.Element class
         titleParagraph.Alignment = Element.ALIGN_CENTER;
         procedureParagraph.Alignment = Element.ALIGN_JUSTIFIED;
@@ -174,43 +160,6 @@ namespace SmartFhirApplication.Controllers
         doc.Add(procedureParagraph);
         doc.Add(ciParagraph);
         doc.Add(comparisonParagraph);
-        for (int i = 0; i < FindingsList.Count; i++)
-        {
-          Paragraph tempGraph = new Paragraph(FindingsList[i], SubtitleFont)
-          {
-            SpacingAfter = 2
-          };
-          doc.Add(tempGraph);
-          doc.Add(new Paragraph("\n"));
-          PdfPTable table = new PdfPTable(2)
-          {
-            SpacingAfter = 3
-          };
-          PdfPCell cat = new PdfPCell(new Phrase("Category"));
-          cat.BackgroundColor = new BaseColor(211, 211, 211);
-          PdfPCell fin = new PdfPCell(new Phrase("Finding"));
-          fin.BackgroundColor = new BaseColor(211, 211, 211);
-          table.AddCell(cat);
-          table.AddCell(fin);
-          for (int j = 0; j < Findings[i].Count; j++)
-          {
-            var find = Findings[i][j][0];
-            var index = find.IndexOf(": ");
-            if (index != -1)
-            {
-              table.AddCell(find.Substring(0, index));
-              table.AddCell(find.Substring(index + 2));
-            }
-            else
-            {
-              table.AddCell("");
-              table.AddCell(find);
-            }
-
-          }
-          doc.Add(table);
-        }
-
         doc.Add(impressionParagraph);
         doc.AddTitle(title);
         doc.AddSubject(title + " Report for Patient 001");
@@ -281,6 +230,63 @@ namespace SmartFhirApplication.Controllers
         return "";
       }
       return value.Substring(adjustedPosA, posB - adjustedPosA);
+    }
+
+
+    private Paragraph ParagraphConstruct(TemplateViewModel node)
+    {
+      var defaultFont = new Font(Font.FontFamily.COURIER, 11f, Font.NORMAL);
+      var output = new Paragraph(node.Header, defaultFont);
+      if (node.IsLeaf)
+      {
+        //Not sure how to handle this lol
+      }
+      else
+      {
+        //PdfPTable table = new PdfPTable(2);
+        // Create a table for all the things if they're leaves
+        // Otherwise recurse bcz we want to group the tables
+        if (node.ChildNodes[0].IsLeaf)
+        {
+          //Make a table to add
+          PdfPTable table = Tablify(node);
+          output.Add(table);
+        }
+        else
+        {
+          for (int i = 0; i < node.ChildNodes.Count; i++)
+          {
+            output.Add(ParagraphConstruct(node.ChildNodes[i]));
+          }
+
+        }
+
+      }
+      return output;
+    }
+
+    private PdfPTable Tablify(TemplateViewModel node)
+    {
+      PdfPTable output = new PdfPTable(2)
+      {
+        SpacingAfter = 3
+      };
+      PdfPCell cat = new PdfPCell(new Phrase("Category"))
+      {
+        BackgroundColor = new BaseColor(211, 211, 211)
+      };
+      PdfPCell fin = new PdfPCell(new Phrase("Finding"))
+      {
+        BackgroundColor = new BaseColor(211, 211, 211)
+      };
+      output.AddCell(cat);
+      output.AddCell(fin);
+      for(int i = 0; i < node.ChildNodes.Count; i++)
+      {
+        output.AddCell(node.Header);
+        output.AddCell(node.Result);
+      }
+      return output;
     }
   }
 }

@@ -65,7 +65,7 @@ using SmartFhirApplication.Models;
             WriteLiteral("<!DOCTYPE html>\n<html>\n");
             EndContext();
             BeginContext(23, 5977, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "dfecd623b9fb412cb3418c5d5a6e3cf6", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4c96ff3d89764d5daca75872f97609d3", async() => {
                 BeginContext(29, 5964, true);
                 WriteLiteral(@"
 <meta charset=""UTF-8""/>
@@ -306,7 +306,7 @@ using SmartFhirApplication.Models;
             WriteLiteral("\n");
             EndContext();
             BeginContext(6001, 4849, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "afe16cf9791a4df5a22c605884adf57a", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "33c92e59cd7b460fb4e9694d9b6890a1", async() => {
                 BeginContext(6007, 1017, true);
                 WriteLiteral(@"
 <section data-section-name=""Procedure"">
@@ -345,7 +345,7 @@ using SmartFhirApplication.Models;
 ");
                 EndContext();
                 BeginContext(7024, 78, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "53f7ee524956426cac20a77fc9919595", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "32a67abaa5ea408e8f9a42a130cdf4f7", async() => {
                     BeginContext(7082, 11, true);
                     WriteLiteral("Homogeneous");
                     EndContext();
@@ -369,7 +369,7 @@ using SmartFhirApplication.Models;
                 WriteLiteral("\n");
                 EndContext();
                 BeginContext(7103, 82, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "082fb8e8defa4e57b043d7319bfb1e03", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "9f618ba3d2ae405d98d8b24f27eba2cf", async() => {
                     BeginContext(7163, 13, true);
                     WriteLiteral("Heterogeneous");
                     EndContext();
@@ -426,7 +426,7 @@ using SmartFhirApplication.Models;
 ");
                 EndContext();
                 BeginContext(8203, 78, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "a7f14e0aabcd47daa118e94f35d2ff5e", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "252de1ced6e5439cb86f76d48edba48c", async() => {
                     BeginContext(8261, 11, true);
                     WriteLiteral("Homogeneous");
                     EndContext();
@@ -450,7 +450,7 @@ using SmartFhirApplication.Models;
                 WriteLiteral("\n");
                 EndContext();
                 BeginContext(8282, 82, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e27883bd79e644f9972ee0ad45c1d85f", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "3ddd62d961b841d8baa04163f5f87042", async() => {
                     BeginContext(8342, 13, true);
                     WriteLiteral("Heterogeneous");
                     EndContext();

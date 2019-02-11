@@ -58,7 +58,7 @@ using SmartFhirApplication.Models;
             WriteLiteral("<!DOCTYPE html>\n<html>\n");
             EndContext();
             BeginContext(23, 5255, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "fb510cea6a24480aaee86c89921e2c77", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "1ea358be7fb646fdbdd5b6e91f9fdb0a", async() => {
                 BeginContext(29, 873, true);
                 WriteLiteral(@"
 <meta charset=""UTF-8""/>
@@ -77,7 +77,7 @@ using SmartFhirApplication.Models;
 ");
                 EndContext();
                 BeginContext(902, 76, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "102ba62e7478478bbdac7571c7ece53e", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "838b71a387fc42d2900d88d997839ecc", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -269,7 +269,7 @@ using SmartFhirApplication.Models;
             WriteLiteral("\n");
             EndContext();
             BeginContext(5279, 3168, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "9e12ec32a5e045eb842dc198734323f0", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "fd9c2d11cf1a44bd8ee30b3f4a6089fc", async() => {
                 BeginContext(5285, 3155, true);
                 WriteLiteral(@"
 <section data-section-name=""Procedure"">
