@@ -9,7 +9,7 @@ $(document).ready(function () {
     if (impressionNode.length > 0) {
         $.ajax({
             url: URL,
-            type: 'GET',
+            type: 'POST',
             data: {
                 AccessionId: "a819497684894126",
                 Title: procedureNode.children()[0].innerHTML
@@ -28,23 +28,43 @@ $(document).ready(function () {
         });
 
     }
+
+    //$.ajax({
+    //    url: 'FindFiles',
+    //    type: 'POST',
+    //    async: 'false',
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: 'json',
+    //    success: function (data) {
+    //        $.each(data, function (index, val) {
+    //            $('#viewSelected').append('<option value="' + val.name + '">ASDF</option>');
+    //            //dropDown.append('<option value="Nineteen2">CT Onco Renal Mass2</option>');
+    //        });
+    //    },
+    //    error: function (data, status, error) {
+    //        console.log(data);
+    //        console.log(status);
+    //        console.log(error);
+    //    }
+    //});
 });
+
 $("#submit").click(function (e) {
     //document.getElementById('T3_2').value to get 
-    var procedureNode = $('section[data-section-name="Procedure"]')[0];
-    //console.log(procedureNode.children()[0].innerHTML);
-    var title = procedureNode.children[0].innerHTML;
-    var procedure = getTree(procedureNode);
-    var clinicalNode = $('section[data-section-name="Clinical information"]')[0];
-    var clinical = getTree(clinicalNode);
-    var comparisonNode = $('section[data-section-name="Comparison"]')[0];
-    var comparison = getTree(comparisonNode);
-    var findingsNode = $('section[data-section-name="Findings"]')[0];
-    var findings = getTree(findingsNode);
-    var impressionNode = $('section[data-section-name="Impression"]')[0];
-    var impression = getTree(impressionNode);
-    var findingsSections = [];
-
+    {
+        var procedureNode = $('section[data-section-name="Procedure"]')[0];
+        //console.log(procedureNode.children()[0].innerHTML);
+        var title = procedureNode.children[0].innerHTML;
+        var procedure = getTree(procedureNode);
+        var clinicalNode = $('section[data-section-name="Clinical information"]')[0];
+        var clinical = getTree(clinicalNode);
+        var comparisonNode = $('section[data-section-name="Comparison"]')[0];
+        var comparison = getTree(comparisonNode);
+        var findingsNode = $('section[data-section-name="Findings"]')[0];
+        var findings = getTree(findingsNode);
+        var impressionNode = $('section[data-section-name="Impression"]')[0];
+        var impression = getTree(impressionNode);
+    }
     $.ajax({
         url: 'Create',
         type: 'POST',
@@ -55,8 +75,7 @@ $("#submit").click(function (e) {
             ClinicalInformation: clinical,
             Comparison: comparison,
             Findings: findings,
-            Impression: impression,
-            FindingsList: findingsSections
+            Impression: impression
         },
         success: function (data) {
             console.log("Success?");
