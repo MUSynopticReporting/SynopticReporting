@@ -42,7 +42,7 @@ namespace SmartFhirApplication.Controllers
                        string Location)
     {
       CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression);
-
+      //Maybe call make XML here? 
     }
     public void CreatePDF(string title,
                        TemplateViewModel Procedure,
@@ -87,8 +87,7 @@ namespace SmartFhirApplication.Controllers
 
       }
       // Response.Redirect("~/results/test.pdf");
-
-
+      
     }
 
     public JsonResult FindFiles()
