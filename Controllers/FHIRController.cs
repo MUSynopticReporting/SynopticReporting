@@ -118,7 +118,61 @@ namespace SmartFhirApplication.Controllers
     public string code { get; set; }
   }
 
-  public class FHIRController : Controller
+    public class resources
+    {
+        public resources(string json)
+        {
+            JObject jObject = JObject.Parse(json);
+            type = jObject["resourceType"].ToString();
+            gender = jObject["gender"].ToString();
+            birthDate = jObject["birthDate"].ToString();
+        }
+        public string type { get; set; }
+        public string gender { get; set; }
+        public string birthDate { get; set; }
+    }
+
+    public class identifier
+    {
+        public identifier(string json)
+        {
+            JObject jObject = JObject.Parse(json);
+            use = jObject["identifier"][0]["use"].ToString();
+            system = jObject["identifier"][0]["system"].ToString();
+            value = jObject["identifier"][0]["value"].ToString();
+            start = jObject["identifier"][0]["period"]["start"].ToString();
+            display = jObject["identifier"][0]["assigner"]["display"].ToString();
+        }
+        public string use { get; set; }
+        public string system { get; set; }
+        public string value { get; set; }
+        public string start { get; set; }
+        public string display { get; set; }
+    }
+
+    public class name
+    {
+        public name(string json)
+        {
+            JObject jObject = JObject.Parse(json);
+            family = jObject["name"][0]["family"].ToString();
+            given = jObject["name"][1]["given"].ToString();
+        }
+        public string family { get; set; }
+        public string given { get; set; }
+    }
+
+    public class telecom
+    {
+        public telecom(string json)
+        {
+            JObject jObject = JObject.Parse(json);
+            value = jObject["telecom"][1]["value"].ToString();
+        }
+        public string value { get; set; }
+    }
+
+    public class FHIRController : Controller
     {
         public IActionResult Index()
         {
