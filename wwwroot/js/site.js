@@ -102,7 +102,7 @@ function loadView() {
     })
 }
 document.getElementById("viewLoader").addEventListener("click", loadView);
-
+//XMLDocument docXML = new XMLDocument(loadView);   //I don't think I can do this 
 
 
 // Ok template 16 sucks

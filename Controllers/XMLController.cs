@@ -16,6 +16,7 @@ namespace SmartFhirApplication.Controllers
         }
 
         //My attempt at creating new for Clinical Information.  
+        //This is mostly hard coded at this point and will need to be implemented more dynamically 
         public void ReportDocumentXML()
         {
             XmlDocument xmlDoc = new XmlDocument();
@@ -73,10 +74,13 @@ namespace SmartFhirApplication.Controllers
             xmlDoc.Save("testReport.xml");
         }
         //Now I am looking at the pre-existing templates and will try to load in the information and edit the it and then maybe save it into a new location 
+        //How is that done?   
         public void loadTempXML ()
         {
             XmlDocument doc = new XmlDocument();
             doc.Load("test.xml");//make this name better for each patient and the study done 
+          //  loadView; //want to use this function from site.js but how to implement?  
+          //need to figure out how to pull the information from template 
 
         } 
            /* string title,
