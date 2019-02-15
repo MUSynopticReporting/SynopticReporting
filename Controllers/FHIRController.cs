@@ -183,8 +183,44 @@ namespace SmartFhirApplication.Controllers
     public string responseText;
     private static string text { get; set; }
 
+    public static class PatientClass
+    {
+        private const string PatURL = "http://hackathon.siim.org/fhir/Patient/";
 
-    public JsonResult GetDiagnosticReport(string AccessionId, string Title)
+            public static string PatientMethod(string name, string result)
+        {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://hackathon.siim.org/fhir/Patient/" + name);
+                request.Headers["apikey"] = apikey;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                WebHeaderCollection header = response.Headers;
+                var encoding = ASCIIEncoding.ASCII;
+                using (var reader = new System.IO.StreamReader(response.GetResponseStream(), encoding))
+                {
+                    string responseText = reader.ReadToEnd();
+                    name yeet = new name(responseText);
+                    Trace.WriteLine(yeet.family);
+                    Trace.WriteLine(yeet.given);
+                    result = result + "Name: " + yeet.family + "," + yeet.given + "\n";
+                    resources tpe = new resources(responseText);
+                    result = result + "gender: " + tpe.gender + " birth date: " + tpe.birthDate + "\n"; 
+                    identifier hello = new identifier(responseText);
+                    Trace.WriteLine(hello.use);
+                    Trace.WriteLine(hello.system);
+                    Trace.WriteLine(hello.value);
+                    Trace.WriteLine(hello.start);
+                    Trace.WriteLine(hello.display);
+                    result = result + "Identifier: " + hello.value + " ID system: " + hello.system + "\n";
+
+                    telecom peet = new telecom(responseText);
+                    result = result + "Contact info: " + peet.value + "\n";
+
+                }
+                response.Close();
+                return result;
+            }
+    }
+
+        public JsonResult GetDiagnosticReport(string AccessionId, string Title)
     {
       string URL = "http://hackathon.siim.org/fhir/DiagnosticReport/" + AccessionId;
       HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);

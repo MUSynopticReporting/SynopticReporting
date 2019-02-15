@@ -7,6 +7,7 @@ using SmartFhirApplication.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Linq;
+using static SmartFhirApplication.Controllers.FHIRController;
 
 namespace SmartFhirApplication.Controllers
 {
@@ -24,7 +25,7 @@ namespace SmartFhirApplication.Controllers
       return View();
     }
     // Called when "Load Template" button is pressed, converts an html file into a view ActionResult for display by MVC system
-    public IActionResult LoadTemplate(string path)
+    public IActionResult LoadTemplate(string path, string name)
     {
       return View("~/Views/Templates/" + path + ".html");
     }
@@ -73,18 +74,20 @@ namespace SmartFhirApplication.Controllers
         Paragraph comparisonParagraph = ParagraphConstruct(Comparison);
         Paragraph impressionParagraph = ParagraphConstruct(Impression);
         Paragraph findingsParagraph = ParagraphConstruct(Findings);
-        // Setting paragraph's text alignment using iTextSharp.text.Element class
+                // Setting paragraph's text alignment using iTextSharp.text.Element class
+        Paragraph yeet = autofill(ciParagraph);
         titleParagraph.Alignment = Element.ALIGN_CENTER;
         procedureParagraph.Alignment = Element.ALIGN_JUSTIFIED;
-        ciParagraph.Alignment = Element.ALIGN_JUSTIFIED;
-        // Add the actual paragraphs to the report
+        yeet.Alignment = Element.ALIGN_JUSTIFIED;
+                // Add the actual paragraphs to the report
         doc.Add(titleParagraph);
         doc.Add(procedureParagraph);
-        doc.Add(ciParagraph);
+        doc.Add(yeet);
         doc.Add(comparisonParagraph);
         doc.Add(findingsParagraph);
         doc.Add(impressionParagraph);
-        // Add metadata
+                // Add metadata
+                Trace.WriteLine("yeet");
         doc.AddTitle(title);
         doc.AddSubject(title + " Report for Patient 001");
         doc.AddKeywords(title + ", + Synoptic, Reporting");
@@ -171,6 +174,15 @@ namespace SmartFhirApplication.Controllers
       return value.Substring(adjustedPosA, posB - adjustedPosA);
     }
 
+    private Paragraph autofill(Paragraph clin)
+        {
+            var defaultFont = new Font(Font.FontFamily.COURIER, 11f, Font.NORMAL);
+            var ans = new Paragraph(String.Empty, defaultFont);
+            string info = PatientClass.PatientMethod("siimravi", "Clinical information: ");
+            ans = new Paragraph(info, defaultFont);
+            return ans;
+        }
+
     // TemplateViewModel -> Paragraph
     private Paragraph ParagraphConstruct(TemplateViewModel node)
     {
@@ -251,3 +263,4 @@ namespace SmartFhirApplication.Controllers
 //    //your code to write something to the pdf
 //    return ms.ToArray();
 //}
+
