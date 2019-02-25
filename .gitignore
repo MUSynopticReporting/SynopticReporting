@@ -3,3 +3,6 @@ bin/*
 obj/*
 bin/Debug/*
 obj/Debug/*
+bin/
+obj/
+Debug/
