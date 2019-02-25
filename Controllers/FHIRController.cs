@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Rest;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -179,17 +181,25 @@ namespace SmartFhirApplication.Controllers
             return View();
         }
 
-    private const string apikey = "f64cabaa-6baf-48aa-b1ed-7857813c5c07";
-    public string responseText;
-    private static string text { get; set; }
+        [Route("FHIRController/FindPatients")]
+        public JsonResult FindPatients()
+        {
+            var result = OpenFhirClient();
+            var Patients = result.Search<Patient>().Entry.Select(pat => pat.Resource.IdElement);
+            ViewData["PatList"] = Json(Patients);
+            return Json(Patients);
+        }
+        private const string apikey = "f64cabaa-6baf-48aa-b1ed-7857813c5c07";
+        public string responseText;
+        private static string text { get; set; }
 
-    public static class PatientClass
-    {
-        private const string PatURL = "http://hackathon.siim.org/fhir/Patient/";
+        public static class PatientClass
+        {
+            private const string PatURL = "http://hackathon.siim.org/fhir/Patient/";
 
             public static string PatientMethod(string name, string result)
-        {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://hackathon.siim.org/fhir/Patient/" + name);
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(PatURL + name);
                 request.Headers["apikey"] = apikey;
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 WebHeaderCollection header = response.Headers;
@@ -218,46 +228,59 @@ namespace SmartFhirApplication.Controllers
                 response.Close();
                 return result;
             }
-    }
+        }
 
         public JsonResult GetDiagnosticReport(string AccessionId, string Title)
-    {
-      string URL = "http://hackathon.siim.org/fhir/DiagnosticReport/" + AccessionId;
-      HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
-      request.Headers["apikey"] = apikey;
-      HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        {
+          string URL = "http://hackathon.siim.org/fhir/DiagnosticReport/" + AccessionId;
+          HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
+          request.Headers["apikey"] = apikey;
+          HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
 
-      WebHeaderCollection header = response.Headers;
-      Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
-      var encoding = ASCIIEncoding.ASCII;
-      RootObject RO = new RootObject();
-      using (var reader = new System.IO.StreamReader(response.GetResponseStream(), encoding))
-      {
-        string responseText = reader.ReadToEnd();
-        Trace.WriteLine(responseText);
+          WebHeaderCollection header = response.Headers;
+          Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+          var encoding = ASCIIEncoding.ASCII;
+          RootObject RO = new RootObject();
+          using (var reader = new System.IO.StreamReader(response.GetResponseStream(), encoding))
+          {
+                string responseText = reader.ReadToEnd();
+                Trace.WriteLine(responseText);
 
-        //User user = new User(responseText);
-        //Trace.WriteLine(user.status);
-        Accession id = new Accession(responseText);
-        Trace.WriteLine(id.value);
-        Trace.WriteLine(id.system);
-        CodeSystem loinc = new CodeSystem(responseText);
-        Trace.WriteLine(loinc.code);
-        Trace.WriteLine(loinc.system);
-        RO = JsonConvert.DeserializeObject<RootObject>(responseText);
-      }
-      //Trace.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
-      Console.WriteLine(RO.conclusion);
-      response.Close();
-      if (Title.Equals(RO.code.text))
-      {
-        return Json(RO);
-      }
-      else
-      {
-        return Json(null);
-      }
+                //User user = new User(responseText);
+                //Trace.WriteLine(user.status);
+                Accession id = new Accession(responseText);
+                Trace.WriteLine(id.value);
+                Trace.WriteLine(id.system);
+                CodeSystem loinc = new CodeSystem(responseText);
+                Trace.WriteLine(loinc.code);
+                Trace.WriteLine(loinc.system);
+                RO = JsonConvert.DeserializeObject<RootObject>(responseText);
+            }
+            //Trace.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
+            Console.WriteLine(RO.conclusion);
+            response.Close();
+            if (Title.Equals(RO.code.text))
+            {
+                return Json(RO);
+            }
+            else
+            {
+                return Json(null);
+            }
+        }
+        private static FhirClient OpenFhirClient()
+        {
+            string PatURL = "http://hackathon.siim.org/fhir/";
+
+            var client = new FhirClient(PatURL)
+            {
+                PreferredFormat = ResourceFormat.Json
+            };
+            client.OnBeforeRequest += (object sender, BeforeRequestEventArgs e) => {
+                e.RawRequest.Headers.Add("apikey", apikey); //requires environment variable to match
+            };
+            return client;
+        }
     }
-  }
 }

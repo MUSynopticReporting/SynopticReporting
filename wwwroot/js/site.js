@@ -26,27 +26,44 @@ $(document).ready(function () {
                 console.log(URL);
             }
         });
-
+        $('section[data-section-name="Patient Information"]').removeAttr('hidden');
+    } else {
+        $('#templateNav').removeAttr('hidden');
+        $.ajax({
+            url: '/Home/FindFiles',
+            type: 'POST',
+            async: 'false',
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                // Get a list of file names and append each to view list
+                $.each(data, function (index, val) {
+                    var sub = val.substring(0, val.length - 5);
+                    $('#viewSelected').append('<option value="' + sub + '">' + sub + '</option>');
+                });
+            },
+            error: function (data, status, error) {
+                console.log(data);
+                console.log(status);
+                console.log(error);
+            }
+        });
+        $.ajax({
+                url: '/FHIRController/FindPatients',
+            async: 'false',
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                $.each(data, function (index, val) {
+                    $('#patientSelected').append('<option value="' + val.value + '">' + val.value + '</option>');
+                    console.log(val);
+                })
+            }
+        })
+   
     }
 
-    //$.ajax({
-    //    url: 'FindFiles',
-    //    type: 'POST',
-    //    async: 'false',
-    //    contentType: "application/json; charset=utf-8",
-    //    dataType: 'json',
-    //    success: function (data) {
-    //        $.each(data, function (index, val) {
-    //            $('#viewSelected').append('<option value="' + val.name + '">ASDF</option>');
-    //            //dropDown.append('<option value="Nineteen2">CT Onco Renal Mass2</option>');
-    //        });
-    //    },
-    //    error: function (data, status, error) {
-    //        console.log(data);
-    //        console.log(status);
-    //        console.log(error);
-    //    }
-    //});
+
 });
 
 $("#submit").click(function (e) {
@@ -79,9 +96,11 @@ $("#submit").click(function (e) {
         },
         success: function (data) {
             console.log("Success?");
+            $('#SuccessAlert').removeAttr('hidden');
         },
         error: function (data) {
             console.log(data);
+            $('#FailureAlert').removeAttr('hidden');
         }
     });
 });
@@ -92,7 +111,7 @@ function loadView() {
     var strUser = e.options[e.selectedIndex].value;
     window.location.href = "/Home/" + "LoadTemplate?path=" + strUser;
     $.ajax({
-        url: 'Home/LoadTemplate',
+        url: 'LoadTemplate',
         data: {
         path: strUser
         },
