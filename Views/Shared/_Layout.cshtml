@@ -30,83 +30,57 @@
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SmartFhirApplication</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav" id="templateNav" hidden>
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><button id="viewLoader" typeof="submit" class="btn-header">Load Template:</button></li>
                     <li>
                         <select id="viewSelected" class="btn-header-pos">
-                            <option value="Nineteen">CT Onco Renal Mass</option>
-                            <option value="0000029">CT Sinuses</option>
-                            <option value="0000236">CT Chest</option>
                         </select>
                     </li>
-                    <select id="viewSelected" class="btn-header-pos">
-                        <option value="siimravi">Ravi</option>
-                        <option value="siimravi">Andy</option>
-                        <option value="siimravi">Joe</option>
-                        <option value="siimravi">Neela</option>
-                        <option value="siimravi">Sally</option>
-                    </select>
+                    <li>
+                        <select id="patientSelected" class="btn-header-pos">
+                        </select>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!--<partial name="_CookieConsentPartial" />-->
-
+    <!--<partial>Html.Partial("_PatientInformation");</partial>-->
     <div class="container body-content">
+        <partial name="_PatientInformation" />
+        <h1>@ViewData["Msg"]</h1>
         @RenderBody()
         <hr />
         <footer>
             <button id="submit" type="submit" class="btn btn-primary btn-small">Save</button>
+            <p id="SuccessAlert" style="color:darkgreen" hidden>Output Creation a Success</p>
+            <p id="FailureAlert" style="color:darkred" hidden>Output Creation a Failure</p>
             <p>&copy; 2018 - SmartFhirApplication</p>
         </footer>
     </div>
-    <script type="text/javascript">
-
-    $.ajax({
-        url: '/Home/FindFiles',
-        type: 'POST',
-        async: 'false',
-        contentType: "application/json; charset=utf-8",
-        dataType: 'json',
-        success: function (data) {
-            // Get a list of file names and append each to view list
-            $.each(data, function (index, val) {
-                var sub = val.substring(0, val.length - 5);
-                $('#viewSelected').append('<option value="' + sub + '">' + sub + '</option>');
-            });
-        },
-        error: function (data, status, error) {
-            console.log(data);
-            console.log(status);
-            console.log(error);
-        }
-    });
-
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
         </script>
-        <environment include="Development">
-            <script src="~/lib/jquery/dist/jquery.js"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-            <script src="~/js/site.js" asp-append-version="true"></script>
-        </environment>
-        <environment exclude="Development">
-            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                    asp-fallback-test="window.jQuery"
-                    crossorigin="anonymous"
-                    integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-            </script>
-            <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                    crossorigin="anonymous"
-                    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-            </script>
-            <script src="~/js/site.min.js" asp-append-version="true"></script>
-        </environment>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
 
 
-        @RenderSection("Scripts", required: false)
-    </body>
+    @RenderSection("Scripts", required: false)
+</body>
 </html>
