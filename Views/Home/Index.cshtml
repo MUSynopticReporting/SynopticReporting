@@ -1,0 +1,58 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>MakesCents</title>
+    <script src="~/js/jquery-3.3.1.min.js"></script>
+    <script src="~/js/bootstrap-js/bootstrap-table.min.js"></script>
+    <script src="~/js/jquery.bootgrid.js" asp-append-version="true"></script>
+    <!--<script src="~/js/Index.js" asp-append-version="true"></script>-->
+    <link rel="stylesheet" href="~/css/Index.css" />
+
+</head>
+
+    <body class="index" data-languages="[&quot;code&quot;]">
+        @{
+            ViewData["Title"] = "C53";
+        }
+
+        <h2>Index</h2>
+
+        <p>C53 Synoptic Radiology Reporting System</p>
+
+        <table id="table"  class="table table-condensed table-hover table-striped">
+            <thead>
+                <tr>
+                    <th data-field="id">ID</th>
+                    <th data-field="given">Item Name</th>
+                    <th data-field="family">Item Price</th>
+                </tr>
+            </thead>
+        </table>
+
+    </body>
+</html>
+
+<script>
+    var $table = $('#table')
+    function mounted() {
+        $.ajax({
+            url: '/FHIRController/FindPatients',
+            async: 'false',
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                $table.bootstrapTable({ data: data })
+            }
+        })
+        //$table.bootstrapTable({ data: values })
+    }
+    $(document).ready(mounted());
+
+    $('.table > tbody > tr').click(function () {
+
+    })
+</script>
