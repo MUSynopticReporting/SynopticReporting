@@ -48,7 +48,18 @@ $(document).ready(function () {
                 console.log(error);
             }
         });
-
+        $.ajax({
+                url: '/FHIRController/FindPatients',
+            async: 'false',
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                $.each(data, function (index, val) {
+                    $('#patientSelected').append('<option value="' + val.value + '">' + val.value + '</option>');
+                    console.log(val);
+                })
+            }
+        })
    
     }
 
@@ -61,7 +72,6 @@ $("#submit").click(function (e) {
         var procedureNode = $('section[data-section-name="Procedure"]')[0];
         //console.log(procedureNode.children()[0].innerHTML);
         var title = procedureNode.children[0].innerHTML;
-        var patient = getTree($('section[data-section-name="Patient Information"]')[0]);
         var procedure = getTree(procedureNode);
         var clinicalNode = $('section[data-section-name="Clinical information"]')[0];
         var clinical = getTree(clinicalNode);
@@ -78,7 +88,6 @@ $("#submit").click(function (e) {
         data: {
             Location: window.location.href,
             title: title,
-            PatientInfo: patient,
             Procedure: procedure,
             ClinicalInformation: clinical,
             Comparison: comparison,

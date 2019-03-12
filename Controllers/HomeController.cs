@@ -55,7 +55,6 @@ namespace SmartFhirApplication.Controllers
         // Takes in a title, location, and nodes for each report section
         // Calls each desired action (PDF, XML, etc)
         public void Create(string title,
-                            TemplateViewModel PatientInfo,
                             TemplateViewModel Procedure,
                             TemplateViewModel ClinicalInformation,
                             TemplateViewModel Comparison,
@@ -63,13 +62,12 @@ namespace SmartFhirApplication.Controllers
                             TemplateViewModel Impression,
                             string Location)
         {
-            CreatePDF(title, PatientInfo, Procedure, ClinicalInformation, Comparison, Findings, Impression);
+            CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression);
             //Maybe call make XML here? 
         }
 
         // Takes in a title and a series of nodes
         public void CreatePDF(string title,
-                            TemplateViewModel PatientInfo,
                             TemplateViewModel Procedure,
                             TemplateViewModel ClinicalInformation,
                             TemplateViewModel Comparison,
@@ -82,34 +80,37 @@ namespace SmartFhirApplication.Controllers
             using (Document doc = new Document(PageSize.LETTER))
             using (PdfWriter writer = PdfWriter.GetInstance(doc, fs))
             {
-                var TitleFont = new Font(Font.FontFamily.COURIER, 18f, Font.NORMAL);
-                var DefaultFont = new Font(Font.FontFamily.COURIER, 11f, Font.NORMAL);
-                doc.Open();
-                // Create each paragraph in the report
-                Paragraph titleParagraph = new Paragraph(title, TitleFont);
-                Paragraph patientParagraph = ParagraphConstruct(PatientInfo);
-                Paragraph procedureParagraph = ParagraphConstruct(Procedure);
-                Paragraph ciParagraph = ParagraphConstruct(ClinicalInformation);
-                Paragraph comparisonParagraph = ParagraphConstruct(Comparison);
-                Paragraph impressionParagraph = ParagraphConstruct(Impression);
-                Paragraph findingsParagraph = ParagraphConstruct(Findings);
-                // Setting paragraph's text alignment using iTextSharp.text.Element class
-                titleParagraph.Alignment = Element.ALIGN_CENTER;
-                procedureParagraph.Alignment = Element.ALIGN_JUSTIFIED;
-                // Add the actual paragraphs to the report
-                doc.Add(titleParagraph);
-                doc.Add(patientParagraph);
-                doc.Add(procedureParagraph);
-                doc.Add(comparisonParagraph);
-                doc.Add(findingsParagraph);
-                doc.Add(impressionParagraph);
-                doc.AddTitle(title);
-                doc.AddSubject(title + " Report for Patient 001");
-                doc.AddKeywords(title + ", + Synoptic, Reporting");
-                doc.AddCreator("Synoptic Reporting Thing");
-                doc.AddAuthor("Synoptic Reporting Services");
-                doc.AddHeader("Nothing", "No Header");
-                doc.Close();
+            var TitleFont = new Font(Font.FontFamily.COURIER, 18f, Font.NORMAL);
+            var DefaultFont = new Font(Font.FontFamily.COURIER, 11f, Font.NORMAL);
+            doc.Open();
+            // Create each paragraph in the report
+            Paragraph titleParagraph = new Paragraph(title, TitleFont);
+            Paragraph procedureParagraph = ParagraphConstruct(Procedure);
+            Paragraph ciParagraph = ParagraphConstruct(ClinicalInformation);
+            Paragraph comparisonParagraph = ParagraphConstruct(Comparison);
+            Paragraph impressionParagraph = ParagraphConstruct(Impression);
+            Paragraph findingsParagraph = ParagraphConstruct(Findings);
+                    // Setting paragraph's text alignment using iTextSharp.text.Element class
+            Paragraph yeet = autofill(ciParagraph);
+            titleParagraph.Alignment = Element.ALIGN_CENTER;
+            procedureParagraph.Alignment = Element.ALIGN_JUSTIFIED;
+            yeet.Alignment = Element.ALIGN_JUSTIFIED;
+                    // Add the actual paragraphs to the report
+            doc.Add(titleParagraph);
+            doc.Add(procedureParagraph);
+            doc.Add(yeet);
+            doc.Add(comparisonParagraph);
+            doc.Add(findingsParagraph);
+            doc.Add(impressionParagraph);
+                    // Add metadata
+                    Trace.WriteLine("yeet");
+            doc.AddTitle(title);
+            doc.AddSubject(title + " Report for Patient 001");
+            doc.AddKeywords(title + ", + Synoptic, Reporting");
+            doc.AddCreator("Synoptic Reporting Thing");
+            doc.AddAuthor("Synoptic Reporting Services");
+            doc.AddHeader("Nothing", "No Header");
+            doc.Close();
 
             }
             // Response.Redirect("~/results/test.pdf");

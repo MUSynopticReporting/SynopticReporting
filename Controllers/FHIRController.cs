@@ -13,112 +13,112 @@ using Newtonsoft.Json.Linq;
 
 namespace SmartFhirApplication.Controllers
 {
-    #region Classes
-    public class Meta
+
+  public class Meta
+  {
+    public string versionId { get; set; }
+    public DateTime lastUpdated { get; set; }
+  }
+
+  public class Text
+  {
+    public string status { get; set; }
+    public string div { get; set; }
+  }
+
+  public class Identifier
+  {
+    public string use { get; set; }
+    public string system { get; set; }
+    public string value { get; set; }
+  }
+
+  public class Coding
+  {
+    public string system { get; set; }
+    public string code { get; set; }
+  }
+
+  public class Category
+  {
+    public List<Coding> coding { get; set; }
+  }
+
+  public class Coding2
+  {
+    public string system { get; set; }
+    public string code { get; set; }
+  }
+
+  public class Code
+  {
+    public List<Coding2> coding { get; set; }
+    public string text { get; set; }
+  }
+
+  public class Subject
+  {
+    public string reference { get; set; }
+  }
+
+  public class RootObject
+  {
+    public string resourceType { get; set; }
+    public string id { get; set; }
+    public Meta meta { get; set; }
+    public Text text { get; set; }
+    public List<Identifier> identifier { get; set; }
+    public string status { get; set; }
+    public Category category { get; set; }
+    public Code code { get; set; }
+    public Subject subject { get; set; }
+    public string effectiveDateTime { get; set; }
+    public DateTime issued { get; set; }
+    public string conclusion { get; set; }
+  }
+
+  public class User
+  {
+    public User(string json)
     {
-        public string versionId { get; set; }
-        public DateTime lastUpdated { get; set; }
+      JObject jObject = JObject.Parse(json);
+      JToken jUser = jObject["text"];
+      status = (string)jUser["status"];
+      //teamname = (string)jUser["teamname"];
+      //email = (string)jUser["email"];
+      //players = jUser["players"].ToArray();
     }
 
-    public class Text
-    {
-        public string status { get; set; }
-        public string div { get; set; }
-    }
+    public string status { get; set; }
+    public string teamname { get; set; }
+    public string email { get; set; }
+    public Array players { get; set; }
+  }
 
-    public class Identifier
+  public class Accession
+  {
+    public Accession(string json)
     {
-        public string use { get; set; }
-        public string system { get; set; }
-        public string value { get; set; }
+      JObject jObject = JObject.Parse(json);
+      value = jObject["identifier"][0]["value"].ToString();
+      system = jObject["identifier"][0]["system"].ToString();
     }
+    public string ans { get; set; }
+    public string system { get; set; }
+    public string value { get; set; }
+  }
 
-    public class Coding
+  public class CodeSystem
+  {
+    public CodeSystem(string json)
     {
-        public string system { get; set; }
-        public string code { get; set; }
+      JObject jObject = JObject.Parse(json);
+      code = jObject["code"]["coding"][0]["code"].ToString();
+      system = jObject["code"]["coding"][0]["system"].ToString();
     }
-
-    public class Category
-    {
-        public List<Coding> coding { get; set; }
-    }
-
-    public class Coding2
-    {
-        public string system { get; set; }
-        public string code { get; set; }
-    }
-
-    public class Code
-    {
-        public List<Coding2> coding { get; set; }
-        public string text { get; set; }
-    }
-
-    public class Subject
-    {
-        public string reference { get; set; }
-    }
-
-    public class RootObject
-    {
-        public string resourceType { get; set; }
-        public string id { get; set; }
-        public Meta meta { get; set; }
-        public Text text { get; set; }
-        public List<Identifier> identifier { get; set; }
-        public string status { get; set; }
-        public Category category { get; set; }
-        public Code code { get; set; }
-        public Subject subject { get; set; }
-        public string effectiveDateTime { get; set; }
-        public DateTime issued { get; set; }
-        public string conclusion { get; set; }
-    }
-
-    public class User
-    {
-        public User(string json)
-        {
-            JObject jObject = JObject.Parse(json);
-            JToken jUser = jObject["text"];
-            status = (string)jUser["status"];
-            //teamname = (string)jUser["teamname"];
-            //email = (string)jUser["email"];
-            //players = jUser["players"].ToArray();
-        }
-
-        public string status { get; set; }
-        public string teamname { get; set; }
-        public string email { get; set; }
-        public Array players { get; set; }
-    }
-
-    public class Accession
-    {
-        public Accession(string json)
-        {
-            JObject jObject = JObject.Parse(json);
-            value = jObject["identifier"][0]["value"].ToString();
-            system = jObject["identifier"][0]["system"].ToString();
-        }
-        public string ans { get; set; }
-        public string system { get; set; }
-        public string value { get; set; }
-    }
-
-    public class CodeSystem
-    {
-        public CodeSystem(string json)
-        {
-            JObject jObject = JObject.Parse(json);
-            code = jObject["code"]["coding"][0]["code"].ToString();
-            system = jObject["code"]["coding"][0]["system"].ToString();
-        }
-        public string system { get; set; }
-        public string code { get; set; }
-    }
+    public string system { get; set; }
+    public string code { get; set; }
+  }
 
     public class resources
     {
@@ -173,22 +173,7 @@ namespace SmartFhirApplication.Controllers
         }
         public string value { get; set; }
     }
-    public struct SimplePatient
-    {
-        public string given;
-        public string family;
-        public string id;
-    }
 
-    public struct tableMaker
-    {
-        public List<SimplePatient> Items;
-        public int current;
-        public int rowCount;
-        public int total;
-
-    }
-    #endregion
     public class FHIRController : Controller
     {
         public IActionResult Index()
@@ -200,20 +185,9 @@ namespace SmartFhirApplication.Controllers
         public JsonResult FindPatients()
         {
             var result = OpenFhirClient();
-            List<SimplePatient> res = new List<SimplePatient>();
-            var Patients = result.Search<Patient>().Entry.Select(pat => pat.Resource);
-            foreach(Patient p in Patients)
-            {
-                SimplePatient next = new SimplePatient
-                {
-                    given = p.Name[0].GivenElement[0].Value,
-                    family = p.Name[0].FamilyElement.Value,
-                    id = p.IdElement.Value
-                };
-                res.Add(next);
-            }
-            
-            return Json(res);
+            var Patients = result.Search<Patient>().Entry.Select(pat => pat.Resource.IdElement);
+            ViewData["PatList"] = Json(Patients);
+            return Json(Patients);
         }
         private const string apikey = "f64cabaa-6baf-48aa-b1ed-7857813c5c07";
         public string responseText;
@@ -238,7 +212,7 @@ namespace SmartFhirApplication.Controllers
                     Trace.WriteLine(yeet.given);
                     result = result + "Name: " + yeet.family + "," + yeet.given + "\n";
                     resources tpe = new resources(responseText);
-                    result = result + "gender: " + tpe.gender + " birth date: " + tpe.birthDate + "\n";
+                    result = result + "gender: " + tpe.gender + " birth date: " + tpe.birthDate + "\n"; 
                     identifier hello = new identifier(responseText);
                     Trace.WriteLine(hello.use);
                     Trace.WriteLine(hello.system);
@@ -258,18 +232,18 @@ namespace SmartFhirApplication.Controllers
 
         public JsonResult GetDiagnosticReport(string AccessionId, string Title)
         {
-            string URL = "http://hackathon.siim.org/fhir/DiagnosticReport/" + AccessionId;
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
-            request.Headers["apikey"] = apikey;
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+          string URL = "http://hackathon.siim.org/fhir/DiagnosticReport/" + AccessionId;
+          HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
+          request.Headers["apikey"] = apikey;
+          HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
 
-            WebHeaderCollection header = response.Headers;
-            Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
-            var encoding = ASCIIEncoding.ASCII;
-            RootObject RO = new RootObject();
-            using (var reader = new System.IO.StreamReader(response.GetResponseStream(), encoding))
-            {
+          WebHeaderCollection header = response.Headers;
+          Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+          var encoding = ASCIIEncoding.ASCII;
+          RootObject RO = new RootObject();
+          using (var reader = new System.IO.StreamReader(response.GetResponseStream(), encoding))
+          {
                 string responseText = reader.ReadToEnd();
                 Trace.WriteLine(responseText);
 
@@ -303,9 +277,8 @@ namespace SmartFhirApplication.Controllers
             {
                 PreferredFormat = ResourceFormat.Json
             };
-            client.OnBeforeRequest += (object sender, BeforeRequestEventArgs e) =>
-            {
-                e.RawRequest.Headers.Add("apikey", apikey);// JJ
+            client.OnBeforeRequest += (object sender, BeforeRequestEventArgs e) => {
+                e.RawRequest.Headers.Add("apikey", apikey); //requires environment variable to match
             };
             return client;
         }
