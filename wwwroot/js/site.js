@@ -72,6 +72,8 @@ $("#submit").click(function (e) {
         var procedureNode = $('section[data-section-name="Procedure"]')[0];
         //console.log(procedureNode.children()[0].innerHTML);
         var title = procedureNode.children[0].innerHTML;
+        var patNode = $('section[data-section-name="Patient Information"]')[0];
+        var pat = getTree(patNode);
         var procedure = getTree(procedureNode);
         var clinicalNode = $('section[data-section-name="Clinical information"]')[0];
         var clinical = getTree(clinicalNode);
@@ -92,6 +94,7 @@ $("#submit").click(function (e) {
             ClinicalInformation: clinical,
             Comparison: comparison,
             Findings: findings,
+            PatientInfo: pat,
             Impression: impression
         },
         success: function (data) {
