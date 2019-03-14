@@ -46,15 +46,14 @@
 
     <!--<partial>Html.Partial("_PatientInformation");</partial>-->
     <div class="container body-content">
-        <partial name="_PatientInformation" />
-        <h1>@ViewData["Msg"]</h1>
         @RenderBody()
+        <partial name="_PatientInformation" />
         <hr />
         <footer>
             <button id="submit" type="submit" class="btn btn-primary btn-small">Save</button>
             <p id="SuccessAlert" style="color:darkgreen" hidden>Output Creation a Success</p>
             <p id="FailureAlert" style="color:darkred" hidden>Output Creation a Failure</p>
-            <p>&copy; 2018 - SmartFhirApplication</p>
+            <p>&copy; 2019 - SmartFhirApplication</p>
         </footer>
     </div>
     <environment include="Development">

@@ -178,6 +178,7 @@ function getTree(node) {
 (function (window) {
     window.extractData = function () {
         var ret = $.Deferred();
+
         function onError() {
             console.log('Loading error', arguments);
             ret.reject();
@@ -186,6 +187,24 @@ function getTree(node) {
             if (smart.hasOwnProperty('patient')) {
                 console.log("Success");
                 setupNavigation();
+                var impressionNode = $('section[data-section-name="Impression"]');
+                if (impressionNode.length > 0) {
+                    var patient = smart.patient;
+                    var pt = patient.read();
+                    $.when(pt).fail(onError);
+                    $.when(pt).done(function (patient) {
+                        console.log(patient);
+                        var patientNode = $('section[data-section-name="Patient Information"]')[0];
+                        console.log(patientNode);
+                        patientNode.children[1].children[1].value = patient.name[0].given + " " + patient.name[0].family;
+                        patientNode.children[2].children[1].value = patient.gender;
+                        patientNode.children[3].children[1].value = patient.birthDate;
+                        patientNode.children[4].children[1].value = patient.id;
+                        //patientNode.children[5].children[1].value = patient.
+                        patientNode.children[6].children[1].value = patient.telecom[0].value;
+                    
+                    });
+                }
             } else {
                 onError();
                 // Replace onError with setupNavigation() here for testing if you want
@@ -197,6 +216,6 @@ function getTree(node) {
     window.drawVisualization = function (p) {
         console.log("Draw Visualization");
     };
-
-
 })(window);
+
+
