@@ -34,12 +34,10 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><button id="viewLoader" typeof="submit" class="btn-header">Load Template:</button></li>
                     <li>
-                        <select id="viewSelected" class="btn-header-pos">
-                        </select>
+                        <select id="viewSelected" class="btn-header-pos"></select>
                     </li>
                     <li>
-                        <select id="patientSelected" class="btn-header-pos">
-                        </select>
+                        <select id="patientSelected" class="btn-header-pos"></select>
                     </li>
                 </ul>
             </div>
@@ -63,6 +61,8 @@
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src='~/js/fhir-client-v0.1.12.js'></script>
+        <script src='~/js/fhir-client-cerner-additions-1.0.0.js'></script>
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
@@ -80,7 +80,16 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-
+    <script>
+        extractData().then(
+            function (p) {
+                drawVisualization(p);
+            },
+            function () {
+                $('#errors').html('<p> Failed to call FHIR Service </p>');
+            }
+        );
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

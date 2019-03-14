@@ -2,7 +2,8 @@
 // for details on configuring this project to bundle and minify static web assets.
 // Write your JavaScript code.
 
-$(document).ready(function () {
+function setupNavigation() {
+
     var impressionNode = $('section[data-section-name="Impression"]');
     var URL = "/FHIR/GetDiagnosticReport/";
     var procedureNode = $('section[data-section-name="Procedure"]');
@@ -16,7 +17,6 @@ $(document).ready(function () {
 
             },
             success: function (data) {
-                console.log(data);
                 if (data != null) {
                     impressionNode.children()[1].children.Impression.value = data.conclusion.split(': ')[1];
                 }
@@ -56,7 +56,6 @@ $(document).ready(function () {
             success: function (data) {
                 $.each(data, function (index, val) {
                     $('#patientSelected').append('<option value="' + val.value + '">' + val.value + '</option>');
-                    console.log(val);
                 })
             }
         })
@@ -64,7 +63,8 @@ $(document).ready(function () {
     }
 
 
-});
+}
+
 
 $("#submit").click(function (e) {
     //document.getElementById('T3_2').value to get 
@@ -174,3 +174,29 @@ function getTree(node) {
         
     return output;
 }
+
+(function (window) {
+    window.extractData = function () {
+        var ret = $.Deferred();
+        function onError() {
+            console.log('Loading error', arguments);
+            ret.reject();
+        }
+        function onReady(smart) {
+            if (smart.hasOwnProperty('patient')) {
+                console.log("Success");
+                setupNavigation();
+            } else {
+                onError();
+                // Replace onError with setupNavigation() here for testing if you want
+            }
+        }
+        FHIR.oauth2.ready(onReady, onError);
+        return ret.promise();
+    };
+    window.drawVisualization = function (p) {
+        console.log("Draw Visualization");
+    };
+
+
+})(window);

@@ -8,6 +8,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Linq;
 using static SmartFhirApplication.Controllers.FHIRController;
+using Microsoft.AspNetCore.Http;
 
 namespace SmartFhirApplication.Controllers
 {
@@ -34,7 +35,7 @@ namespace SmartFhirApplication.Controllers
 
         // Test function used to produce a list of all templates in local filesystem. Might try to replace w/ an internet search if possible
         // Not currently in use
-        public JsonResult FindFiles()
+        public Microsoft.AspNetCore.Mvc.JsonResult FindFiles()
         {
             string workingDirectory = Environment.CurrentDirectory;
             DirectoryInfo templatesFolder = null;
@@ -63,12 +64,15 @@ namespace SmartFhirApplication.Controllers
                             TemplateViewModel PatientInfo,
                             string Location)
         {
-            CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
+            //CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
             //Maybe call make XML here? 
+            CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
+
         }
 
+
         // Takes in a title and a series of nodes
-        public void CreatePDF(string title,
+        public Document CreatePDF(string title,
                             TemplateViewModel Procedure,
                             TemplateViewModel ClinicalInformation,
                             TemplateViewModel Comparison,
@@ -111,11 +115,31 @@ namespace SmartFhirApplication.Controllers
                 doc.AddAuthor("Synoptic Reporting Services");
                 doc.AddHeader("Nothing", "No Header");
                 doc.Close();
-
+                return doc;
             }
             // Response.Redirect("~/results/test.pdf");
       
         }
+
+        private Stream CreatePdf()
+        {
+            using (var document = new Document(PageSize.A4, 50, 50, 25, 25))
+            {
+                var output = new MemoryStream();
+
+                var writer = PdfWriter.GetInstance(document, output);
+                writer.CloseStream = false;
+
+                document.Open();
+                document.Add(new Paragraph("Hello World"));
+                document.Close();
+
+                output.Seek(0, SeekOrigin.Begin);
+
+                return output;
+            }
+        }
+
 
         /// <summary>
         /// RetreiveFirstCode: string -> List of (string, string, string)
@@ -177,13 +201,13 @@ namespace SmartFhirApplication.Controllers
         }
 
         private Paragraph autofill(Paragraph clin)
-            {
+        {
                 var defaultFont = new Font(Font.FontFamily.COURIER, 11f, Font.NORMAL);
                 var ans = new Paragraph(String.Empty, defaultFont);
                 string info = PatientClass.PatientMethod("siimravi", "Clinical information: ");
                 ans = new Paragraph(info, defaultFont);
                 return ans;
-            }
+        }
 
         // TemplateViewModel -> Paragraph
         private Paragraph ParagraphConstruct(TemplateViewModel node)
