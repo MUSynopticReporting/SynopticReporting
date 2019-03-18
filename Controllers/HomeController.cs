@@ -8,11 +8,12 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Linq;
 using static SmartFhirApplication.Controllers.FHIRController;
+using Microsoft.AspNetCore.Http;
 
 namespace SmartFhirApplication.Controllers
 {
     public class HomeController : Microsoft.AspNetCore.Mvc.Controller
-{
+    {
         public IActionResult Index()
         {
             return View();
@@ -34,7 +35,7 @@ namespace SmartFhirApplication.Controllers
 
         // Test function used to produce a list of all templates in local filesystem. Might try to replace w/ an internet search if possible
         // Not currently in use
-        public JsonResult FindFiles()
+        public Microsoft.AspNetCore.Mvc.JsonResult FindFiles()
         {
             string workingDirectory = Environment.CurrentDirectory;
             DirectoryInfo templatesFolder = null;
@@ -60,19 +61,24 @@ namespace SmartFhirApplication.Controllers
                             TemplateViewModel Comparison,
                             TemplateViewModel Findings,
                             TemplateViewModel Impression,
+                            TemplateViewModel PatientInfo,
                             string Location)
         {
-            CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression);
+            //CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
             //Maybe call make XML here? 
+            CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
+
         }
 
+
         // Takes in a title and a series of nodes
-        public void CreatePDF(string title,
+        public Document CreatePDF(string title,
                             TemplateViewModel Procedure,
                             TemplateViewModel ClinicalInformation,
                             TemplateViewModel Comparison,
                             TemplateViewModel Findings,
-                            TemplateViewModel Impression)
+                            TemplateViewModel Impression,
+                            TemplateViewModel PatientInfo)
         {
             // Place a file in results/title for Patient_01.pdf, and specify the file type and format
             using (FileStream fs = new FileStream(
@@ -80,42 +86,60 @@ namespace SmartFhirApplication.Controllers
             using (Document doc = new Document(PageSize.LETTER))
             using (PdfWriter writer = PdfWriter.GetInstance(doc, fs))
             {
-            var TitleFont = new Font(Font.FontFamily.COURIER, 18f, Font.NORMAL);
-            var DefaultFont = new Font(Font.FontFamily.COURIER, 11f, Font.NORMAL);
-            doc.Open();
-            // Create each paragraph in the report
-            Paragraph titleParagraph = new Paragraph(title, TitleFont);
-            Paragraph procedureParagraph = ParagraphConstruct(Procedure);
-            Paragraph ciParagraph = ParagraphConstruct(ClinicalInformation);
-            Paragraph comparisonParagraph = ParagraphConstruct(Comparison);
-            Paragraph impressionParagraph = ParagraphConstruct(Impression);
-            Paragraph findingsParagraph = ParagraphConstruct(Findings);
-                    // Setting paragraph's text alignment using iTextSharp.text.Element class
-            Paragraph yeet = autofill(ciParagraph);
-            titleParagraph.Alignment = Element.ALIGN_CENTER;
-            procedureParagraph.Alignment = Element.ALIGN_JUSTIFIED;
-            yeet.Alignment = Element.ALIGN_JUSTIFIED;
-                    // Add the actual paragraphs to the report
-            doc.Add(titleParagraph);
-            doc.Add(procedureParagraph);
-            doc.Add(yeet);
-            doc.Add(comparisonParagraph);
-            doc.Add(findingsParagraph);
-            doc.Add(impressionParagraph);
-                    // Add metadata
-                    Trace.WriteLine("yeet");
-            doc.AddTitle(title);
-            doc.AddSubject(title + " Report for Patient 001");
-            doc.AddKeywords(title + ", + Synoptic, Reporting");
-            doc.AddCreator("Synoptic Reporting Thing");
-            doc.AddAuthor("Synoptic Reporting Services");
-            doc.AddHeader("Nothing", "No Header");
-            doc.Close();
-
+                var TitleFont = new Font(Font.FontFamily.COURIER, 18f, Font.NORMAL);
+                var DefaultFont = new Font(Font.FontFamily.COURIER, 11f, Font.NORMAL);
+                doc.Open();
+                // Create each paragraph in the report
+                Paragraph titleParagraph = new Paragraph(title, TitleFont);
+                Paragraph procedureParagraph = ParagraphConstruct(Procedure);
+                Paragraph ciParagraph = ParagraphConstruct(ClinicalInformation);
+                Paragraph comparisonParagraph = ParagraphConstruct(Comparison);
+                Paragraph impressionParagraph = ParagraphConstruct(Impression);
+                Paragraph findingsParagraph = ParagraphConstruct(Findings);
+                Paragraph patientParagraph = ParagraphConstruct(PatientInfo);
+                // Setting paragraph's text alignment using iTextSharp.text.Element class
+                titleParagraph.Alignment = Element.ALIGN_CENTER;
+                procedureParagraph.Alignment = Element.ALIGN_JUSTIFIED;
+                // Add the actual paragraphs to the report
+                doc.Add(titleParagraph);
+                doc.Add(patientParagraph);
+                doc.Add(procedureParagraph);
+                doc.Add(comparisonParagraph);
+                doc.Add(findingsParagraph);
+                doc.Add(impressionParagraph);
+                // Add metadata
+                doc.AddTitle(title);
+                doc.AddSubject(title + " Report for Patient 001");
+                doc.AddKeywords(title + ", + Synoptic, Reporting");
+                doc.AddCreator("Synoptic Reporting Thing");
+                doc.AddAuthor("Synoptic Reporting Services");
+                doc.AddHeader("Nothing", "No Header");
+                doc.Close();
+                return doc;
             }
             // Response.Redirect("~/results/test.pdf");
       
         }
+
+        private Stream CreatePdf()
+        {
+            using (var document = new Document(PageSize.A4, 50, 50, 25, 25))
+            {
+                var output = new MemoryStream();
+
+                var writer = PdfWriter.GetInstance(document, output);
+                writer.CloseStream = false;
+
+                document.Open();
+                document.Add(new Paragraph("Hello World"));
+                document.Close();
+
+                output.Seek(0, SeekOrigin.Begin);
+
+                return output;
+            }
+        }
+
 
         /// <summary>
         /// RetreiveFirstCode: string -> List of (string, string, string)
@@ -177,13 +201,13 @@ namespace SmartFhirApplication.Controllers
         }
 
         private Paragraph autofill(Paragraph clin)
-            {
+        {
                 var defaultFont = new Font(Font.FontFamily.COURIER, 11f, Font.NORMAL);
                 var ans = new Paragraph(String.Empty, defaultFont);
                 string info = PatientClass.PatientMethod("siimravi", "Clinical information: ");
                 ans = new Paragraph(info, defaultFont);
                 return ans;
-            }
+        }
 
         // TemplateViewModel -> Paragraph
         private Paragraph ParagraphConstruct(TemplateViewModel node)

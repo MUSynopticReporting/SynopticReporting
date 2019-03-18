@@ -2,7 +2,8 @@
 // for details on configuring this project to bundle and minify static web assets.
 // Write your JavaScript code.
 
-$(document).ready(function () {
+function setupNavigation() {
+
     var impressionNode = $('section[data-section-name="Impression"]');
     var URL = "/FHIR/GetDiagnosticReport/";
     var procedureNode = $('section[data-section-name="Procedure"]');
@@ -16,7 +17,6 @@ $(document).ready(function () {
 
             },
             success: function (data) {
-                console.log(data);
                 if (data != null) {
                     impressionNode.children()[1].children.Impression.value = data.conclusion.split(': ')[1];
                 }
@@ -56,7 +56,6 @@ $(document).ready(function () {
             success: function (data) {
                 $.each(data, function (index, val) {
                     $('#patientSelected').append('<option value="' + val.value + '">' + val.value + '</option>');
-                    console.log(val);
                 })
             }
         })
@@ -64,7 +63,8 @@ $(document).ready(function () {
     }
 
 
-});
+}
+
 
 $("#submit").click(function (e) {
     //document.getElementById('T3_2').value to get 
@@ -72,6 +72,8 @@ $("#submit").click(function (e) {
         var procedureNode = $('section[data-section-name="Procedure"]')[0];
         //console.log(procedureNode.children()[0].innerHTML);
         var title = procedureNode.children[0].innerHTML;
+        var patNode = $('section[data-section-name="Patient Information"]')[0];
+        var pat = getTree(patNode);
         var procedure = getTree(procedureNode);
         var clinicalNode = $('section[data-section-name="Clinical information"]')[0];
         var clinical = getTree(clinicalNode);
@@ -92,6 +94,7 @@ $("#submit").click(function (e) {
             ClinicalInformation: clinical,
             Comparison: comparison,
             Findings: findings,
+            PatientInfo: pat,
             Impression: impression
         },
         success: function (data) {
@@ -171,3 +174,48 @@ function getTree(node) {
         
     return output;
 }
+
+(function (window) {
+    window.extractData = function () {
+        var ret = $.Deferred();
+
+        function onError() {
+            console.log('Loading error', arguments);
+            ret.reject();
+        }
+        function onReady(smart) {
+            if (smart.hasOwnProperty('patient')) {
+                console.log("Success");
+                setupNavigation();
+                var impressionNode = $('section[data-section-name="Impression"]');
+                if (impressionNode.length > 0) {
+                    var patient = smart.patient;
+                    var pt = patient.read();
+                    $.when(pt).fail(onError);
+                    $.when(pt).done(function (patient) {
+                        console.log(patient);
+                        var patientNode = $('section[data-section-name="Patient Information"]')[0];
+                        console.log(patientNode);
+                        patientNode.children[1].children[1].value = patient.name[0].given + " " + patient.name[0].family;
+                        patientNode.children[2].children[1].value = patient.gender;
+                        patientNode.children[3].children[1].value = patient.birthDate;
+                        patientNode.children[4].children[1].value = patient.id;
+                        //patientNode.children[5].children[1].value = patient.
+                        patientNode.children[6].children[1].value = patient.telecom[0].value;
+                    
+                    });
+                }
+            } else {
+                onError();
+                // Replace onError with setupNavigation() here for testing if you want
+            }
+        }
+        FHIR.oauth2.ready(onReady, onError);
+        return ret.promise();
+    };
+    window.drawVisualization = function (p) {
+        console.log("Draw Visualization");
+    };
+})(window);
+
+
