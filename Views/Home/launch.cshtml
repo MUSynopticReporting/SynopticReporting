@@ -6,12 +6,11 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel='stylesheet' type='text/css' href='~/css/example-smart-app.css'>
     <!--
       Temporarily disable cerner-smart-embeddable-lib
       <link rel='stylesheet' type='text/css' href='./lib/css/cerner-smart-embeddable-lib-1.0.0.min.css'>
     -->
-    <title>Example-SMART-App</title>
+    <title>Synoptic Reporting</title>
 </head>
 <body>
     <!-- Required JS files to enable this page to embed within an MPage -->
@@ -32,7 +31,7 @@
     <script>
         FHIR.oauth2.authorize({
             'client_id': 'YOUR-SMART-HEALTH-IT-CLIENT-ID-HERE',
-            'scope': 'patient/Patient.read patient/Observation.read launch online_access openid profile'
+            'scope': 'patient/Patient.read patient/ImagingStudy.* patient/DiagnosticReport.* launch online_access openid profile'
         });
     </script>
     <div class="spinner">

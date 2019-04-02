@@ -26,16 +26,16 @@ namespace SmartFhirApplication.Controllers
             return View();
         }
         // Called when "Load Template" button is pressed, converts an html file into a view ActionResult for display by MVC system
-        public IActionResult LoadTemplate(string path, string name)
+        public IActionResult LoadTemplate(string path)
         {
-            ViewData["Msg"] = path;
+            //ViewData["Msg"] = path;
             //return View("~/Views/Home/TemplateLauncher.cshtml");// + path + ".html");
             return View("~/Views/Templates/" + path + ".html");
         }
 
         // Test function used to produce a list of all templates in local filesystem. Might try to replace w/ an internet search if possible
         // Not currently in use
-        public Microsoft.AspNetCore.Mvc.JsonResult FindFiles()
+        public JsonResult FindFiles()
         {
             string workingDirectory = Environment.CurrentDirectory;
             DirectoryInfo templatesFolder = null;
@@ -55,7 +55,7 @@ namespace SmartFhirApplication.Controllers
         // Function which gets called after report is filled in
         // Takes in a title, location, and nodes for each report section
         // Calls each desired action (PDF, XML, etc)
-        public void Create(string title,
+        public string Create(string title,
                             TemplateViewModel Procedure,
                             TemplateViewModel ClinicalInformation,
                             TemplateViewModel Comparison,
@@ -66,8 +66,10 @@ namespace SmartFhirApplication.Controllers
         {
             //CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
             //Maybe call make XML here? 
-            CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
-
+            var result = CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
+            string workingDirectory = Environment.CurrentDirectory;
+            var bitArr = GetBinaryFile("results/" + title + " for Patient_01.pdf");
+            return Convert.ToBase64String(bitArr);
         }
 
 
@@ -82,7 +84,7 @@ namespace SmartFhirApplication.Controllers
         {
             // Place a file in results/title for Patient_01.pdf, and specify the file type and format
             using (FileStream fs = new FileStream(
-            "results/" + title + " for Patient_01.pdf", FileMode.Create, FileAccess.Write, FileShare.None))
+                "results/" + title + " for Patient_01.pdf", FileMode.Create, FileAccess.Write, FileShare.None))
             using (Document doc = new Document(PageSize.LETTER))
             using (PdfWriter writer = PdfWriter.GetInstance(doc, fs))
             {
@@ -97,9 +99,11 @@ namespace SmartFhirApplication.Controllers
                 Paragraph impressionParagraph = ParagraphConstruct(Impression);
                 Paragraph findingsParagraph = ParagraphConstruct(Findings);
                 Paragraph patientParagraph = ParagraphConstruct(PatientInfo);
+
                 // Setting paragraph's text alignment using iTextSharp.text.Element class
                 titleParagraph.Alignment = Element.ALIGN_CENTER;
                 procedureParagraph.Alignment = Element.ALIGN_JUSTIFIED;
+
                 // Add the actual paragraphs to the report
                 doc.Add(titleParagraph);
                 doc.Add(patientParagraph);
@@ -107,6 +111,7 @@ namespace SmartFhirApplication.Controllers
                 doc.Add(comparisonParagraph);
                 doc.Add(findingsParagraph);
                 doc.Add(impressionParagraph);
+
                 // Add metadata
                 doc.AddTitle(title);
                 doc.AddSubject(title + " Report for Patient 001");
@@ -119,25 +124,6 @@ namespace SmartFhirApplication.Controllers
             }
             // Response.Redirect("~/results/test.pdf");
       
-        }
-
-        private Stream CreatePdf()
-        {
-            using (var document = new Document(PageSize.A4, 50, 50, 25, 25))
-            {
-                var output = new MemoryStream();
-
-                var writer = PdfWriter.GetInstance(document, output);
-                writer.CloseStream = false;
-
-                document.Open();
-                document.Add(new Paragraph("Hello World"));
-                document.Close();
-
-                output.Seek(0, SeekOrigin.Begin);
-
-                return output;
-            }
         }
 
 
@@ -198,15 +184,6 @@ namespace SmartFhirApplication.Controllers
                 return "";
             }
             return value.Substring(adjustedPosA, posB - adjustedPosA);
-        }
-
-        private Paragraph autofill(Paragraph clin)
-        {
-                var defaultFont = new Font(Font.FontFamily.COURIER, 11f, Font.NORMAL);
-                var ans = new Paragraph(String.Empty, defaultFont);
-                string info = PatientClass.PatientMethod("siimravi", "Clinical information: ");
-                ans = new Paragraph(info, defaultFont);
-                return ans;
         }
 
         // TemplateViewModel -> Paragraph
@@ -276,17 +253,21 @@ namespace SmartFhirApplication.Controllers
             }
             return output;
         }
+
+        /// <summary>
+        /// Yup
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        private byte[] GetBinaryFile(string filename)
+        {
+            byte[] bytes;
+            using (FileStream file = new FileStream(filename, FileMode.Open, FileAccess.Read))
+            {
+                bytes = new byte[file.Length];
+                file.Read(bytes, 0, (int)file.Length);
+            }
+            return bytes;
+        }
     }
 }
-
-
-
-//Ideas for outputting without storing locally? In case the Smart application is obnoxious with this stuff
-//using (MemoryStream ms = new MemoryStream())
-//{
-//    Document doc = new Document(PageSize.A4, 60, 60, 10, 10);
-//PdfWriter pw = PdfWriter.GetInstance(doc, ms);
-//    //your code to write something to the pdf
-//    return ms.ToArray();
-//}
-

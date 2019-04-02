@@ -1,0 +1,102 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
+for details on configuring this project to bundle and minify static web assets. */
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+.btn-header {
+    display: block;
+    position: relative;
+    padding: 15px 15px;
+    background-color: transparent;
+    border-color: transparent;
+    color: #9d9d9d;
+}
+
+.btn-header-pos {
+    display: block;
+    position: relative;
+    padding: 15px 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+p {
+    
+}
+
+header {
+
+}
+
+.level1 {
+    font-size: 24px;
+}
+
+.level2 {
+    font-size: 18px;
+
+}
+
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > .active > a:hover {
+    background: #ef983a;
+}
+
+section[data-section-name="Patient Information"]{
+    width: 50%;
+    float: right;
+}
+section[data-section-name="Procedure"] {
+    width: 50%;
+    /*float: left;*/
+}
+section[data-section-name="Clinical information"] {
+    width: 50%;
+    /*float: left;*/
+}
+section[data-section-name="Comparison"] {
+    width: 50%;
+    /*float: left;*/
+}
+section[data-section-name="Findings"] {
+    width: 50%;
+    /*float: left;*/
+}
+section[data-section-name="Impression"] {
+    width: 50%;
+    /*float: left;*/
+}

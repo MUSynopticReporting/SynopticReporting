@@ -1,8 +1,9 @@
 ﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 // Write your JavaScript code.
+var pat;
 
-function setupNavigation() {
+function setupNavigation(smart) {
 
     var impressionNode = $('section[data-section-name="Impression"]');
     var URL = "/FHIR/GetDiagnosticReport/";
@@ -48,42 +49,60 @@ function setupNavigation() {
                 console.log(error);
             }
         });
-        $.ajax({
-                url: '/FHIRController/FindPatients',
-            async: 'false',
-            contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            success: function (data) {
-                $.each(data, function (index, val) {
-                    $('#patientSelected').append('<option value="' + val.value + '">' + val.value + '</option>');
-                })
-            }
-        })
+        //var patient = smart.patient;
+        //var pt = patient.read();
+        //$.when(pt).done(function (patient) {
+
+        //    var sub = {
+        //        "reference": "Patient/" + patient.id
+        //    }
+        //    //var res = {
+        //    //    "status": "registered",
+        //    //    "started": "2008-12-20T18:31:21-05:00",
+        //    //    "issued": "2008-12-20T18:31:21-05:00",
+        //    //    "subject": sub,
+        //    //    "resourceType": "ImagingStudy"
+        //    //};
+
+            
+
+        //    //smart.api.create({ type: "ImagingStudy", data: res }).then(function () {
+        //    //    console.log("Here");
+        //    //    var obv = smart.patient.api.fetchAll({
+        //    //        type: 'ImagingStudy'
+        //    //    });
+        //    //    $.when(obv).done(function (studies) {
+        //    //        console.log(studies)
+        //    //    });
+        //    //});
+
+        //});
+        
    
     }
 
 
 }
 
-
-$("#submit").click(function (e) {
+var smartVal;
+$("#submit").click(function submit(e) {
     //document.getElementById('T3_2').value to get 
-    {
-        var procedureNode = $('section[data-section-name="Procedure"]')[0];
-        //console.log(procedureNode.children()[0].innerHTML);
-        var title = procedureNode.children[0].innerHTML;
-        var patNode = $('section[data-section-name="Patient Information"]')[0];
-        var pat = getTree(patNode);
-        var procedure = getTree(procedureNode);
-        var clinicalNode = $('section[data-section-name="Clinical information"]')[0];
-        var clinical = getTree(clinicalNode);
-        var comparisonNode = $('section[data-section-name="Comparison"]')[0];
-        var comparison = getTree(comparisonNode);
-        var findingsNode = $('section[data-section-name="Findings"]')[0];
-        var findings = getTree(findingsNode);
-        var impressionNode = $('section[data-section-name="Impression"]')[0];
-        var impression = getTree(impressionNode);
-    }
+    var procedureNode = $('section[data-section-name="Procedure"]')[0];
+    //console.log(procedureNode.children()[0].innerHTML);
+    var title = procedureNode.children[0].innerHTML;
+    var patNode = $('section[data-section-name="Patient Information"]')[0];
+    var pat = getTree(patNode);
+    var procedure = getTree(procedureNode);
+    var clinicalNode = $('section[data-section-name="Clinical information"]')[0];
+    var clinical = getTree(clinicalNode);
+    var comparisonNode = $('section[data-section-name="Comparison"]')[0];
+    var comparison = getTree(comparisonNode);
+    var findingsNode = $('section[data-section-name="Findings"]')[0];
+    var findings = getTree(findingsNode);
+    var impressionNode = $('section[data-section-name="Impression"]')[0];
+    var impression = getTree(impressionNode);
+    console.log(pat);
+    var pdf;
     $.ajax({
         url: 'Create',
         type: 'POST',
@@ -99,13 +118,45 @@ $("#submit").click(function (e) {
         },
         success: function (data) {
             console.log("Success?");
+            var doc = {
+                "contentType": "application/pdf",
+                "language":"en",
+                "data": data,
+                "title": title,
+            }
+            var coding = {
+                "code": "51990-0",
+                "display": "Basic Metabolic Panel",
+                "system": "http://loinc.org"
+            }
+            var code = {
+                "coding": [coding]
+            }
+            var sub = {
+                "reference": "Patient/" + pat.ChildNodes[3].Result
+            }
+            var res = {
+                "status": "final",
+                "code": code,
+                "effectiveDateTime": "2008-12-20T18:31:21-05:00",
+                "issued": "2008-12-20T18:31:21-05:00",
+                "subject": sub,
+                "resourceType": "DiagnosticReport",
+                "presentedForm": doc
+            };
+
+            smartVal.api.create({ type: "DiagnosticReport", data: res }).then(function () {
+                console.log("Here");
+            });
             $('#SuccessAlert').removeAttr('hidden');
+
         },
         error: function (data) {
             console.log(data);
             $('#FailureAlert').removeAttr('hidden');
         }
     });
+
 });
 
 
@@ -114,9 +165,9 @@ function loadView() {
     var strUser = e.options[e.selectedIndex].value;
     window.location.href = "/Home/" + "LoadTemplate?path=" + strUser;
     $.ajax({
-        url: 'LoadTemplate',
+        url: '/Home/LoadTemplate',
         data: {
-        path: strUser
+            path: strUser
         },
         success: function (data) {
             console.log("Yay");
@@ -174,7 +225,7 @@ function getTree(node) {
         
     return output;
 }
-
+var patient;
 (function (window) {
     window.extractData = function () {
         var ret = $.Deferred();
@@ -183,39 +234,51 @@ function getTree(node) {
             console.log('Loading error', arguments);
             ret.reject();
         }
+        function onError2() {
+
+        }
         function onReady(smart) {
+            smartVal = smart;
             if (smart.hasOwnProperty('patient')) {
-                console.log("Success");
-                setupNavigation();
+                setupNavigation(smart);
                 var impressionNode = $('section[data-section-name="Impression"]');
                 if (impressionNode.length > 0) {
-                    var patient = smart.patient;
+                    patient = smart.patient;
                     var pt = patient.read();
-                    $.when(pt).fail(onError);
-                    $.when(pt).done(function (patient) {
+                    var obv = smart.patient.api.fetchAll({
+                        type: 'DiagnosticReport'
+                    });
+                    $.when(pt, obv).fail(onError);
+                    $.when(pt, obv).done(function (patient, dr) {
                         console.log(patient);
+                        console.log(dr);
+                        pat = patient;
                         var patientNode = $('section[data-section-name="Patient Information"]')[0];
-                        console.log(patientNode);
                         patientNode.children[1].children[1].value = patient.name[0].given + " " + patient.name[0].family;
                         patientNode.children[2].children[1].value = patient.gender;
                         patientNode.children[3].children[1].value = patient.birthDate;
                         patientNode.children[4].children[1].value = patient.id;
                         //patientNode.children[5].children[1].value = patient.
                         patientNode.children[6].children[1].value = patient.telecom[0].value;
-                    
+
+                        //$.each(dr, function (val) {
+                        //    $('#patientSelected').append('<option value="' + val.value + '">' + val.value + '</option>');
+                        //});
                     });
+
                 }
             } else {
                 onError();
                 // Replace onError with setupNavigation() here for testing if you want
             }
         }
-        FHIR.oauth2.ready(onReady, onError);
+        FHIR.oauth2.ready(onReady, onError2);
         return ret.promise();
     };
     window.drawVisualization = function (p) {
         console.log("Draw Visualization");
     };
 })(window);
+
 
 

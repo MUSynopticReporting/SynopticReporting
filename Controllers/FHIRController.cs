@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using Microsoft.AspNetCore.Mvc;
@@ -197,37 +196,6 @@ namespace SmartFhirApplication.Controllers
         {
             private const string PatURL = "http://hackathon.siim.org/fhir/Patient/";
 
-            public static string PatientMethod(string name, string result)
-            {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(PatURL + name);
-                request.Headers["apikey"] = apikey;
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                WebHeaderCollection header = response.Headers;
-                var encoding = ASCIIEncoding.ASCII;
-                using (var reader = new System.IO.StreamReader(response.GetResponseStream(), encoding))
-                {
-                    string responseText = reader.ReadToEnd();
-                    name yeet = new name(responseText);
-                    Trace.WriteLine(yeet.family);
-                    Trace.WriteLine(yeet.given);
-                    result = result + "Name: " + yeet.family + "," + yeet.given + "\n";
-                    resources tpe = new resources(responseText);
-                    result = result + "gender: " + tpe.gender + " birth date: " + tpe.birthDate + "\n"; 
-                    identifier hello = new identifier(responseText);
-                    Trace.WriteLine(hello.use);
-                    Trace.WriteLine(hello.system);
-                    Trace.WriteLine(hello.value);
-                    Trace.WriteLine(hello.start);
-                    Trace.WriteLine(hello.display);
-                    result = result + "Identifier: " + hello.value + " ID system: " + hello.system + "\n";
-
-                    telecom peet = new telecom(responseText);
-                    result = result + "Contact info: " + peet.value + "\n";
-
-                }
-                response.Close();
-                return result;
-            }
         }
 
         public JsonResult GetDiagnosticReport(string AccessionId, string Title)
@@ -281,6 +249,37 @@ namespace SmartFhirApplication.Controllers
                 e.RawRequest.Headers.Add("apikey", apikey); //requires environment variable to match
             };
             return client;
+        }
+        [Route("FHIRController/CreateDiagnosticReport")]
+        public DiagnosticReport CreateDiagnosticReport()
+        {
+            Hl7.Fhir.Model.Coding coding = new Hl7.Fhir.Model.Coding
+            {
+                System = "http://loinc.org",
+                Code = "51990-0",
+                Display = "Basic Metabolic Panel"
+            };
+            List<Hl7.Fhir.Model.Coding> CodingList = new List<Hl7.Fhir.Model.Coding>
+            {
+                coding
+            };
+            var code = new CodeableConcept
+            {
+                Coding = CodingList
+
+            };
+            ResourceReference reff = new ResourceReference
+            {
+                Reference = "Patient/099e7de7-c952-40e2-9b4e-0face78c9d80"
+            };
+            DiagnosticReport dr = new DiagnosticReport
+            {
+                Code = code,
+                Status = DiagnosticReport.DiagnosticReportStatus.Final,
+                Subject = reff,
+            };
+            //dr.ResourceType = "DiagnosticReport";
+            return dr;
         }
     }
 }
