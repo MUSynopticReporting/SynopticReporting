@@ -123,10 +123,31 @@ namespace SmartFhirApplication.Controllers
             //Add comment end of clinical information section 
         }
 
-        public void ImagProcDescrip(XmlDocument xmlDoc)
+        public void ImagProcDescrip(XmlDocument xmlDoc, XmlNode rootNode)
         {
+            //Title Node 
+            XmlNode titleNode = xmlDoc.CreateElement("title");
+            titleNode.InnerText = "Clinical Information";
+            rootNode.AppendChild(titleNode);
+
 
         }
+
+        public void FindingsSection (XmlDocument xmlDoc, XmlNode rootNode)
+        {
+            XmlNode titleNode = xmlDoc.CreateElement("title");
+            titleNode.InnerText = "Findings";
+            rootNode.AppendChild(titleNode);
+        }
+
+
+           /* TemplateViewModel Procedure,
+                            TemplateViewModel ClinicalInformation,
+                            TemplateViewModel Comparison,
+                            TemplateViewModel Findings,
+                            TemplateViewModel Impression,
+                            string Location)
+                            */
         //subsection called "section" that is often called in the xml so it seemed easier to make one function for it 
         //the .Value needs to be loaded in better than this since it changes depending on where it is called
         public void sectionSubNode(XmlDocument xmlDoc, XmlNode rootNode)
