@@ -8,7 +8,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Linq;
 using static SmartFhirApplication.Controllers.FHIRController;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http; 
 
 namespace SmartFhirApplication.Controllers
 {
@@ -65,11 +65,12 @@ namespace SmartFhirApplication.Controllers
                             string Location)
         {
             //CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
-            //Maybe call make XML here? 
             var result = CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
             string workingDirectory = Environment.CurrentDirectory;
             var bitArr = GetBinaryFile("results/" + title + " for Patient_01.pdf");
             return Convert.ToBase64String(bitArr);
+            //Make XML doc 
+            XMLController.ReportDocumentXML();
         }
 
 

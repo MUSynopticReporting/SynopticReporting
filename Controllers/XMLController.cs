@@ -17,7 +17,7 @@ namespace SmartFhirApplication.Controllers
 
         //My attempt at creating new for Clinical Information.  
         //This is mostly hard coded at this point and will need to be implemented more dynamically 
-        public void ReportDocumentXML()
+        public static void ReportDocumentXML()
         {
             XmlDocument xmlDoc = new XmlDocument();
             // try { xmlDoc.Load("testReport.xml");  }
@@ -34,7 +34,7 @@ namespace SmartFhirApplication.Controllers
             clientInfoXML(xmlDoc, node3);
          
 
-            xmlDoc.Save("testReport.xml");
+            xmlDoc.Save("D:\\testReport.xml");
         }
 
         public void beginningSection(XmlDocument xmlDoc)
@@ -44,7 +44,7 @@ namespace SmartFhirApplication.Controllers
         }
 
         //Clinical Information section 
-        public void clientInfoXML(XmlDocument xmlDoc, XmlNode componentNode)
+        public static void clientInfoXML(XmlDocument xmlDoc, XmlNode componentNode)
         {
             //how to add comment clinical information section?
             XmlNode rootNode = xmlDoc.CreateElement("section");
@@ -123,7 +123,7 @@ namespace SmartFhirApplication.Controllers
             //Add comment end of clinical information section 
         }
 
-        public void ImagProcDescrip(XmlDocument xmlDoc, XmlNode rootNode)
+        public static void ImagProcDescrip(XmlDocument xmlDoc, XmlNode rootNode)
         {
             //Title Node 
             XmlNode titleNode = xmlDoc.CreateElement("title");
@@ -133,7 +133,7 @@ namespace SmartFhirApplication.Controllers
 
         }
 
-        public void FindingsSection (XmlDocument xmlDoc, XmlNode rootNode)
+        public static void FindingsSection (XmlDocument xmlDoc, XmlNode rootNode)
         {
             XmlNode titleNode = xmlDoc.CreateElement("title");
             titleNode.InnerText = "Findings";
@@ -150,7 +150,7 @@ namespace SmartFhirApplication.Controllers
                             */
         //subsection called "section" that is often called in the xml so it seemed easier to make one function for it 
         //the .Value needs to be loaded in better than this since it changes depending on where it is called
-        public void sectionSubNode(XmlDocument xmlDoc, XmlNode rootNode)
+        public static void sectionSubNode(XmlDocument xmlDoc, XmlNode rootNode)
         {
             //templateId
             XmlElement templateIdElement = xmlDoc.CreateElement("templateId");
@@ -180,7 +180,7 @@ namespace SmartFhirApplication.Controllers
             rootNode.AppendChild(textNode);
         }
 
-        public void CodeSubSubSection(XmlDocument xmlDoc, XmlNode rootNode)
+        public static void CodeSubSubSection(XmlDocument xmlDoc, XmlNode rootNode)
         {
             //Code 
             XmlElement codeElement = xmlDoc.CreateElement("code");

@@ -66,3 +66,5 @@ C:\Users\Natalie\Source\repos\SynopticReporting\SynopticReporting-1\obj\Debug\ne
 C:\Users\Natalie\Source\repos\SynopticReporting\SynopticReporting-1\obj\Debug\netcoreapp2.1\SmartFhirApplication.csproj.CopyComplete
 C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\bin\Debug\netcoreapp2.1\specification.zip
 C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_PatientInformation.g.cshtml.cs
+C:\Users\Natalie\Source\repos\SynopticReporting\SynopticReporting-1\bin\Debug\netcoreapp2.1\specification.zip
+C:\Users\Natalie\Source\repos\SynopticReporting\SynopticReporting-1\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_PatientInformation.g.cshtml.cs
