@@ -1,8 +1,4 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-// Write your JavaScript code.
-var pat;
-
+﻿
 function setupNavigation(smart) {
 
     var impressionNode = $('section[data-section-name="Impression"]');
@@ -48,36 +44,7 @@ function setupNavigation(smart) {
                 console.log(status);
                 console.log(error);
             }
-        });
-        //var patient = smart.patient;
-        //var pt = patient.read();
-        //$.when(pt).done(function (patient) {
-
-        //    var sub = {
-        //        "reference": "Patient/" + patient.id
-        //    }
-        //    //var res = {
-        //    //    "status": "registered",
-        //    //    "started": "2008-12-20T18:31:21-05:00",
-        //    //    "issued": "2008-12-20T18:31:21-05:00",
-        //    //    "subject": sub,
-        //    //    "resourceType": "ImagingStudy"
-        //    //};
-
-            
-
-        //    //smart.api.create({ type: "ImagingStudy", data: res }).then(function () {
-        //    //    console.log("Here");
-        //    //    var obv = smart.patient.api.fetchAll({
-        //    //        type: 'ImagingStudy'
-        //    //    });
-        //    //    $.when(obv).done(function (studies) {
-        //    //        console.log(studies)
-        //    //    });
-        //    //});
-
-        //});
-        
+        });        
    
     }
 
@@ -85,6 +52,7 @@ function setupNavigation(smart) {
 }
 
 var smartVal;
+var pract;
 $("#submit").click(function submit(e) {
     //document.getElementById('T3_2').value to get 
     var procedureNode = $('section[data-section-name="Procedure"]')[0];
@@ -101,8 +69,8 @@ $("#submit").click(function submit(e) {
     var findings = getTree(findingsNode);
     var impressionNode = $('section[data-section-name="Impression"]')[0];
     var impression = getTree(impressionNode);
-    console.log(pat);
-    var pdf;
+    var pdfDoc;
+    var xmlDoc;
     $.ajax({
         url: 'Create',
         type: 'POST',
@@ -117,38 +85,13 @@ $("#submit").click(function submit(e) {
             Impression: impression
         },
         success: function (data) {
-            console.log("Success?");
-            var doc = {
+            pdfDoc = {
                 "contentType": "application/pdf",
                 "language":"en",
                 "data": data,
                 "title": title,
             }
-            var coding = {
-                "code": "51990-0",
-                "display": "Basic Metabolic Panel",
-                "system": "http://loinc.org"
-            }
-            var code = {
-                "coding": [coding]
-            }
-            var sub = {
-                "reference": "Patient/" + pat.ChildNodes[3].Result
-            }
-            var res = {
-                "status": "final",
-                "code": code,
-                "effectiveDateTime": "2008-12-20T18:31:21-05:00",
-                "issued": "2008-12-20T18:31:21-05:00",
-                "subject": sub,
-                "resourceType": "DiagnosticReport",
-                "presentedForm": doc
-            };
-
-            smartVal.api.create({ type: "DiagnosticReport", data: res }).then(function () {
-                console.log("Here");
-            });
-            $('#SuccessAlert').removeAttr('hidden');
+            
 
         },
         error: function (data) {
@@ -156,6 +99,48 @@ $("#submit").click(function submit(e) {
             $('#FailureAlert').removeAttr('hidden');
         }
     });
+    var coding = {
+        "code": "18748-4",
+        "display": "Diagnostic Imaging Report",
+        "system": "http://loinc.org"
+    }
+    var code = {
+        "coding": [coding]
+    }
+    var catCoding = {
+        "code": "RAD",
+        "display": "Radiology",
+        "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+    }
+    var cat = {
+        "coding": [catCoding]
+    }
+    var sub = {
+        "reference": "Patient/" + pat.ChildNodes[3].Result
+    }
+    var perf = {
+        "reference": "Practitioner/" + pract.id
+    }
+    var today = new Date();
+    var presented = [
+        pdfDoc,
+        xmlDoc
+    ]
+    var res = {
+        "status": "final",
+        "code": code,
+        "effectiveDateTime": today,
+        "issued": today,
+        "subject": sub,
+        "resourceType": "DiagnosticReport",
+        "presentedForm": pdfDoc,
+        "conclusion": impression.ChildNodes[0].Result,
+        "performer": perf
+    };
+
+    smartVal.api.create({ type: "DiagnosticReport", data: res }).then(function () {
+    });
+    $('#SuccessAlert').removeAttr('hidden');
 
 });
 
@@ -226,6 +211,7 @@ function getTree(node) {
     return output;
 }
 var patient;
+var user;
 (function (window) {
     window.extractData = function () {
         var ret = $.Deferred();
@@ -244,26 +230,21 @@ var patient;
                 var impressionNode = $('section[data-section-name="Impression"]');
                 if (impressionNode.length > 0) {
                     patient = smart.patient;
+                    user = smart.user;
                     var pt = patient.read();
-                    var obv = smart.patient.api.fetchAll({
-                        type: 'DiagnosticReport'
-                    });
-                    $.when(pt, obv).fail(onError);
-                    $.when(pt, obv).done(function (patient, dr) {
+                    var usr = user.read();
+                    $.when(pt, usr).fail(onError);
+                    $.when(pt, usr).done(function (patient, user) {
                         console.log(patient);
-                        console.log(dr);
-                        pat = patient;
+                        console.log(user);
+                        pract = user;
                         var patientNode = $('section[data-section-name="Patient Information"]')[0];
                         patientNode.children[1].children[1].value = patient.name[0].given + " " + patient.name[0].family;
                         patientNode.children[2].children[1].value = patient.gender;
                         patientNode.children[3].children[1].value = patient.birthDate;
                         patientNode.children[4].children[1].value = patient.id;
-                        //patientNode.children[5].children[1].value = patient.
                         patientNode.children[6].children[1].value = patient.telecom[0].value;
 
-                        //$.each(dr, function (val) {
-                        //    $('#patientSelected').append('<option value="' + val.value + '">' + val.value + '</option>');
-                        //});
                     });
 
                 }
