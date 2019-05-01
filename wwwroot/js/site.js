@@ -16,26 +16,7 @@ function setupNavigation(smart) {
 
     var impressionNode = $('section[data-section-name="Impression"]');
     var URL = "/FHIR/GetDiagnosticReport/";
-    var procedureNode = $('section[data-section-name="Procedure"]');
     if (impressionNode.length > 0) {
-        $.ajax({
-            url: URL,
-            type: 'POST',
-            data: {
-                AccessionId: "a819497684894126",
-                Title: procedureNode.children()[0].innerHTML
-
-            },
-            success: function (data) {
-                if (data != null) {
-                    impressionNode.children()[1].children.Impression.value = data.conclusion.split(': ')[1];
-                }
-            },
-            error: function (data) {
-                console.log(data);
-                console.log(URL);
-            }
-        });
         $('section[data-section-name="Patient Information"]').removeAttr('hidden');
     } else {
         $('#templateNav').removeAttr('hidden');
@@ -104,7 +85,51 @@ $("#submit").click(function submit(e) {
                 "data": data,
                 "title": title,
             }
-            
+            var coding = {
+                "code": "18748-4",
+                "display": "Diagnostic Imaging Report",
+                "system": "http://loinc.org"
+            }
+            var code = {
+                "coding": [coding]
+            }
+            var catCoding = {
+                "code": "RAD",
+                "display": "Radiology",
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }
+            var cat = {
+                "coding": [catCoding]
+            }
+            var sub = {
+                "reference": "Patient/" + pat.ChildNodes[3].Result
+            }
+            var perf = {
+                "reference": "Practitioner/" + pract.id
+            }
+            var today = new Date();
+            //var presented = [
+            //    pdfDoc,
+            //    xmlDoc
+            //]
+            console.log(pdfDoc);
+
+            var res = {
+                "status": "final",
+                "code": code,
+                "effectiveDateTime": today,
+                "issued": today,
+                "subject": sub,
+                "resourceType": "DiagnosticReport",
+                "presentedForm": pdfDoc,
+                "conclusion": impression.ChildNodes[0].Result,
+                "performer": perf
+            };
+
+            smartVal.api.create({ type: "DiagnosticReport", data: res }).then(function () {
+            });
+            $('#SuccessAlert').removeAttr('hidden');
+
 
         },
         error: function (data) {
@@ -112,48 +137,6 @@ $("#submit").click(function submit(e) {
             $('#FailureAlert').removeAttr('hidden');
         }
     });
-    var coding = {
-        "code": "18748-4",
-        "display": "Diagnostic Imaging Report",
-        "system": "http://loinc.org"
-    }
-    var code = {
-        "coding": [coding]
-    }
-    var catCoding = {
-        "code": "RAD",
-        "display": "Radiology",
-        "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
-    }
-    var cat = {
-        "coding": [catCoding]
-    }
-    var sub = {
-        "reference": "Patient/" + pat.ChildNodes[3].Result
-    }
-    var perf = {
-        "reference": "Practitioner/" + pract.id
-    }
-    var today = new Date();
-    var presented = [
-        pdfDoc,
-        xmlDoc
-    ]
-    var res = {
-        "status": "final",
-        "code": code,
-        "effectiveDateTime": today,
-        "issued": today,
-        "subject": sub,
-        "resourceType": "DiagnosticReport",
-        "presentedForm": pdfDoc,
-        "conclusion": impression.ChildNodes[0].Result,
-        "performer": perf
-    };
-
-    smartVal.api.create({ type: "DiagnosticReport", data: res }).then(function () {
-    });
-    $('#SuccessAlert').removeAttr('hidden');
 
 });
 
