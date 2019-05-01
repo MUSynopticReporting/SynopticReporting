@@ -84,10 +84,13 @@ section[data-section-name="Procedure"] {
     width: 50%;
     /*float: left;*/
 }
-section[data-section-name="Clinical information"] {
-    width: 50%;
-    /*float: left;*/
-}
+    section[data-section-name="Procedure"] > p > textarea {
+        width: 50%;
+    }
+    section[data-section-name="Clinical information"] {
+        width: 50%;
+        /*float: left;*/
+    }
 section[data-section-name="Comparison"] {
     width: 50%;
     /*float: left;*/

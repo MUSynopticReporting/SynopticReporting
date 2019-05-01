@@ -53,7 +53,7 @@ section_data, template_section_name, template_section_required, template_section
 }
 
 textarea {
-    width: 55em;
+    /*! width: 55em; */
     height: 3em;
     display: block;
 }
