@@ -2977,6 +2977,12 @@
           "lib/netstandard1.6/NuGet.Frameworks.dll": {}
         }
       },
+      "NuGet.VisualStudio/4.6.4": {
+        "type": "package",
+        "build": {
+          "build/NuGet.VisualStudio.targets": {}
+        }
+      },
       "NUnit/3.11.0": {
         "type": "package",
         "dependencies": {
@@ -8430,6 +8436,19 @@
         "nuget.frameworks.nuspec"
       ]
     },
+    "NuGet.VisualStudio/4.6.4": {
+      "sha512": "0vSnnbamxdjvPgfbwNneZbeIUMcgahhzsEH2Yjfm9onoLTE8wlsz3q5y/2rf/s10Y1uG66JNSdQxdDAecRzGiA==",
+      "type": "package",
+      "path": "nuget.visualstudio/4.6.4",
+      "files": [
+        ".signature.p7s",
+        "build/NuGet.VisualStudio.targets",
+        "lib/net46/NuGet.VisualStudio.dll",
+        "lib/net46/NuGet.VisualStudio.xml",
+        "nuget.visualstudio.4.6.4.nupkg.sha512",
+        "nuget.visualstudio.nuspec"
+      ]
+    },
     "NUnit/3.11.0": {
       "sha512": "zecrYxUA5p5w8AZ2bvbBbiUIcrQnZAVPrziNMSWMdcOi0D2Oe7yKUNivWPIQMcUwQDHmWtS/ijnD48ubU/eHZQ==",
       "type": "package",
@@ -13413,6 +13432,7 @@
       "NUnit >= 3.11.0",
       "NUnit.ConsoleRunner >= 3.10.0",
       "Newtonsoft.Json >= 12.0.1",
+      "NuGet.VisualStudio >= 4.6.4",
       "System.Xml.ReaderWriter >= 4.3.1",
       "iTextSharp >= 5.5.13",
       "jQuery >= 3.3.1",
@@ -13498,6 +13518,10 @@
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[12.0.1, )"
+          },
+          "NuGet.VisualStudio": {
+            "target": "Package",
+            "version": "[4.6.4, )"
           },
           "System.Xml.ReaderWriter": {
             "target": "Package",

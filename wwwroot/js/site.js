@@ -103,6 +103,7 @@ $("#submit").click(function submit(e) {
     var impression = getTree(impressionNode);
     console.log(pat);
     var pdf;
+    var xml1;
     $.ajax({
         url: 'Create',
         type: 'POST',

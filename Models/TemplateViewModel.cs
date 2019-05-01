@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace SmartFhirApplication.Models
 {
@@ -16,4 +18,22 @@ namespace SmartFhirApplication.Models
     public string Code { get; set; }
     public string Header { get; set; }
   }
+
+  public class XmlModel
+    {
+        [XmlRoot("ClinicalDocument")]
+        public class Data
+        {
+            [XmlElement("component")]
+            public TemplateViewModel TemplateViewModel { get; set; }
+           // public templateId templateId { get; set; }
+        }
+      //  [SerializableAttribute()]
+      //  public class TemplateViewModel
+    //    {
+   //         [XmlElementAttribute()]
+     //       public 
+    //    }
+    }
+    
 }

@@ -22,7 +22,15 @@ namespace SmartFhirApplication.Controllers
             XmlDocument xmlDoc = new XmlDocument();
             // try { xmlDoc.Load("testReport.xml");  }
             // catch (System.IO.FileNotFoundException)
-
+            //loaded from example DICOM part 20
+            xmlDoc.LoadXml("<?xml version= \"1.0\" encoding=\"utf-8\"?>"
+                    + "<?xml-stylesheet type=\"text/xsl\" href=\"CDA-DIR.xsl\"?>"
+                    + "<ClinicalDocument xmlns=\"urn: hl7 - org:v3\"" 
+                    + "xmlns:voc = \"urn:hl7-org:v3/voc\""
+                    + "xmlns: xsi = \"http://www.w3.org/2001/XMLSchema-instance \""
+                    + "xmlns: ps3 - 20 = \"urn:dicom-org:ps3-20\""
+                    + "xsi: schemaLocation = \"urn:hl7-org:v3 CDA.xsd\" >"
+                    + "<realmCode code=\"UV\"/>");
             // beginningSection(xmlDoc);
             XmlNode node1 = xmlDoc.CreateElement("component");
             xmlDoc.AppendChild(node1);
@@ -34,7 +42,7 @@ namespace SmartFhirApplication.Controllers
             clientInfoXML(xmlDoc, node3);
          
 
-            xmlDoc.Save("D:\\testReport.xml");
+            xmlDoc.Save("C:\\testReport.xml");
         }
 
         public void beginningSection(XmlDocument xmlDoc)
@@ -57,22 +65,7 @@ namespace SmartFhirApplication.Controllers
             rootAtt.Value = "4";    //put in value call here for loop and such to get value //VALUE WILL CHANGE
             templateIdElement.Attributes.Append(rootAtt);
             rootNode.AppendChild(templateIdElement);
-            //Code 
-       /*     XmlElement codeElement = xmlDoc.CreateElement("code");
-            XmlAttribute codeAtt = xmlDoc.CreateAttribute("code");
-            codeAtt.Value = "55752-0";    //put in value call here for loop and such to get value 
-            codeElement.Attributes.Append(codeAtt);
-            codeAtt = xmlDoc.CreateAttribute("codeSystem");
-            codeAtt.Value = "2.16";    //put in value call here for loop and such to get value 
-            codeElement.Attributes.Append(codeAtt);
-            codeAtt = xmlDoc.CreateAttribute("codeSystemName");
-            codeAtt.Value = "LOINC";    //put in value call here for loop and such to get value 
-            codeElement.Attributes.Append(codeAtt);
-            codeAtt = xmlDoc.CreateAttribute("displayName");
-            codeAtt.Value = "Clinical Information";    //put in value call here for loop and such to get value 
-            codeElement.Attributes.Append(codeAtt);
-            rootNode.AppendChild(codeElement);
-*/
+          
             CodeSubSubSection(xmlDoc, rootNode);
             //Title Node 
             XmlNode titleNode = xmlDoc.CreateElement("title");
@@ -140,14 +133,6 @@ namespace SmartFhirApplication.Controllers
             rootNode.AppendChild(titleNode);
         }
 
-
-           /* TemplateViewModel Procedure,
-                            TemplateViewModel ClinicalInformation,
-                            TemplateViewModel Comparison,
-                            TemplateViewModel Findings,
-                            TemplateViewModel Impression,
-                            string Location)
-                            */
         //subsection called "section" that is often called in the xml so it seemed easier to make one function for it 
         //the .Value needs to be loaded in better than this since it changes depending on where it is called
         public static void sectionSubNode(XmlDocument xmlDoc, XmlNode rootNode)

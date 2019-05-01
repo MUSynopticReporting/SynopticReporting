@@ -7,8 +7,13 @@ using SmartFhirApplication.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Linq;
+using System.Xml;
+using System.Xml.Serialization;
+using System.Xml.Linq;
+using System.Web;
 using static SmartFhirApplication.Controllers.FHIRController;
-using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Http;
+using System.Text;
 
 namespace SmartFhirApplication.Controllers
 {
@@ -68,12 +73,153 @@ namespace SmartFhirApplication.Controllers
             var result = CreatePDF(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
             string workingDirectory = Environment.CurrentDirectory;
             var bitArr = GetBinaryFile("results/" + title + " for Patient_01.pdf");
-            return Convert.ToBase64String(bitArr);
-            //Make XML doc 
-            XMLController.ReportDocumentXML();
+            //Make XMLdoc
+            //createXML1(title);
+            createXML1();
+            CreateXMLtake2(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
+            //XMLController.ReportDocumentXML();
+
+            return Convert.ToBase64String(bitArr); 
+        }
+        /*
+        public void createXMLtry3()
+        {
+          //  xmlUrl Url = new xmlUrl();
+          //  Url.Url = fileName.Text;
+          //  List<xmlUrl> Urls = new List<xmlUrl>();
+          //  Urls.Add(Url);
+            XmlSerializer ser = new XmlSerializer(typeof(T));
+            StringBuilder sb = new StringBuilder();
+            StringWriter writer = new StringWriter(sb);
+            ser.Serialize(writer, Urls);
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(sb.ToString());
+
+            var fileName = DateTime.Now.ToString("ddmmyyyyhhss") + ".xml";
+
+            doc.WriteTo(XmlWriter);
+            XmlWriter.Flush();
+            XmlWriter.Close();
+
+            byte[] byteArray = stream.ToArray();
+
+            Response.Clear();
+           // Response.AppendHeader("Content-Disposition", "attachment; filename=" + lblFile.Text + ".xml");
+            Response.Headers.Add("content-disposition", "attachment; filename=" + fileName);
+            Response.Headers.Add("Content-Length", byteArray.Length.ToString());
+            Response.ContentType = "text/xml";
+            Response.ContentEncoding = Encoding.UTF8;
+            Response.BinaryWrite(byteArray);
+            Response.
+        }  */
+
+      //  public XmlDocument createXML1 (string title )
+        public void createXML1 () { 
+            //string docName = "D:\\SeniorDesign\\" +title + "testReport.xml"; 
+           // var xmlDoc = new XmlDocument();
+            XmlDocument xmlDoc = new XmlDocument();
+           // XmlModel xmlModelData = new XmlModel(); //idea from https://stackoverflow.com/questions/20365143/generate-xml-file-using-data-in-asp-net-mvc-form 
+            //Starting nodes 
+            
+            XmlNode ClinicalDocROOT = xmlDoc.CreateElement("ClinicalDocument");
+            xmlDoc.AppendChild(ClinicalDocROOT);
+            XmlNode ProcedureNode = xmlDoc.CreateElement("Procedure");
+            ClinicalDocROOT.AppendChild(ProcedureNode);
+            XmlNode comp1 = xmlDoc.CreateElement("component");
+            XmlNode StructBody1 = xmlDoc.CreateElement("StructuredBody");
+            XmlNode comp2 = xmlDoc.CreateElement("component");
+            comp2.InnerText = "testing";
+            StructBody1.AppendChild(comp2);
+
+            comp1.AppendChild(StructBody1);
+            ClinicalDocROOT.AppendChild(comp1);
+            //xmlDoc.Save("D:\\SeniorDesign\testReport.xml");
+            xmlDoc.Save("D:\\testReport.xml");
+         //   return xmlDoc;
         }
 
 
+        [HttpPost]
+          public ActionResult CreateXMLtake2(string title,
+                              TemplateViewModel Procedure,
+                              TemplateViewModel ClinicalInformation,
+                              TemplateViewModel Comparison,
+                              TemplateViewModel Findings,
+                              TemplateViewModel Impression,
+                              TemplateViewModel PatientInfo)
+          {
+                var xmlModelData = new XmlModel();
+             //  Create elements in XmlModel object using values in rData
+                 return new XmlResult<XmlModel>()
+                 {
+                     Data = xmlModelData
+                  };
+          }
+        public class XmlResult<T> : ActionResult
+        {
+            public T Data { private get; set; }
+            
+            public void ExecuteResult(ControllerContext context) // override void ExecuteResult(ControllerContext context)
+            {
+                //HttpContext httpContextBase = context.HttpContext;
+                context.HttpContext.Response.Clear();
+                context.HttpContext.Response.ContentType = "text/xml";
+                
+               // context.HttpContext.Response.ContentEncoding = Encoding.UTF8;
+
+                var fileName = DateTime.Now.ToString("ddmmyyyyhhss") + ".xml";
+                context.HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=" + fileName);
+                
+                //httpContextBase.Response.ContentType = "text/xml";
+
+                using (StringWriter writer = new StringWriter())
+                {
+                    XmlSerializer xml = new XmlSerializer(typeof(T));
+                    xml.Serialize(writer, Data);
+                    String outputString = writer.ToString();
+                    context.HttpContext.Response.WriteAsync(outputString, default(System.Threading.CancellationToken)); //(Encoding.UTF8, writer, Encoding.UTF8); //.ToString(writer);
+  
+                }
+            } 
+        }
+  /*      //Another try
+        public class XmlActionResult : ActionResult
+        {
+            
+            public object HttpContext { get; private set; }
+            public XmlActionResult(object data)
+            {
+                Data = data;
+            }
+            public object Data { get; private set; }
+
+            public void ExecuteResult(ControllerContext context) // override void ExecuteResult(ControllerContext context)
+            {
+                //HttpContext httpContextBase = context.HttpContext;
+                context.HttpContext.Response.Clear();
+                context.HttpContext.Response.ContentType = "text/xml";
+
+                // context.HttpContext.Response.ContentEncoding = Encoding.UTF8;
+
+                var fileName = DateTime.Now.ToString("ddmmyyyyhhss") + ".xml";
+                context.HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=" + fileName);
+
+                using (StringWriter writer = new StringWriter())
+                {
+                    //  XmlSerializer xml = new XmlSerializer(typeof(T));
+                    XmlSerializer xml = new XmlSerializer(typeof());
+                    xml.Serialize(writer, Data);
+                    String outputString = writer.ToString();
+                    context.HttpContext.Response.WriteAsync(outputString, default(System.Threading.CancellationToken)); 
+                    //(Encoding.UTF8, writer, Encoding.UTF8); //.ToString(writer);                                                                                               
+                // context.HttpContext.Response.WriteAsync( //(writer); //Write(writer);
+                  // to serialize the model to the response stream :
+                 // context.HttpContext.Response.OnCompleted()
+
+                }
+            }
+        }
+*/
         // Takes in a title and a series of nodes
         public Document CreatePDF(string title,
                             TemplateViewModel Procedure,

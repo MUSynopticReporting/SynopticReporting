@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "4c2b816a12c691c22ed960023baa1a4e933015aa"
+    "signature": "c1047d598f59eb8836489f5675a75da606e63b66"
   },
   "compilationOptions": {
     "defines": [
@@ -33,6 +33,7 @@
           "NUnit": "3.11.0",
           "NUnit.ConsoleRunner": "3.10.0",
           "Newtonsoft.Json": "12.0.1",
+          "NuGet.VisualStudio": "4.6.4",
           "System.Xml.ReaderWriter": "4.3.1",
           "iTextSharp": "5.5.13",
           "jQuery": "3.3.1",
@@ -608,6 +609,7 @@
           "lib/netstandard1.6/NuGet.Frameworks.dll": {}
         }
       },
+      "NuGet.VisualStudio/4.6.4": {},
       "NUnit/3.11.0": {
         "dependencies": {
           "NETStandard.Library": "2.0.3"
@@ -4032,6 +4034,13 @@
       "sha512": "sha512-/VaEPsEgj3p5YPLLxbYc6rB8gYIPf+8wCWOAlAe3l/SP0DXcefZ58uJer1ToBKIpwbPN5LkgTXtvilze5UJoYQ==",
       "path": "nuget.frameworks/4.7.0",
       "hashPath": "nuget.frameworks.4.7.0.nupkg.sha512"
+    },
+    "NuGet.VisualStudio/4.6.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0vSnnbamxdjvPgfbwNneZbeIUMcgahhzsEH2Yjfm9onoLTE8wlsz3q5y/2rf/s10Y1uG66JNSdQxdDAecRzGiA==",
+      "path": "nuget.visualstudio/4.6.4",
+      "hashPath": "nuget.visualstudio.4.6.4.nupkg.sha512"
     },
     "NUnit/3.11.0": {
       "type": "package",
