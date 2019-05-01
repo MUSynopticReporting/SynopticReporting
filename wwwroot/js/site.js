@@ -85,6 +85,9 @@ $("#submit").click(function submit(e) {
                 "data": data,
                 "title": title,
             }
+            xmlDoc = {
+                "contentType": "text/xml",
+            }
             var coding = {
                 "code": "18748-4",
                 "display": "Diagnostic Imaging Report",
@@ -113,6 +116,7 @@ $("#submit").click(function submit(e) {
             //    xmlDoc
             //]
             console.log(pdfDoc);
+            console.log(xmlDoc);
 
             var res = {
                 "status": "final",
@@ -139,6 +143,34 @@ $("#submit").click(function submit(e) {
     });
 
 });
+
+function json2xml(o, tab) {
+    var toXml = function (v, name, ind) {
+        var xml = "";
+        if (typeof (v) == "object") {
+            var hasChild = false;
+            for (var m in v) {
+                if (m.charAt(0) == "@") {
+                    xml += " " + m.substr(1) + "=\"" + v[m].toString() + "\"";
+                } else{
+                    hasChild = true;
+                }
+            }
+            if (hasChild) {
+                for (var m in v) {
+                    if (m == "name") {
+                        xml += "<" + v[m] + ">" + v['value'] + "";
+                    }
+                }
+            }
+        }
+        return xml;
+    }, xml = "";
+    for (var m in o) {
+        xml += toXml(o[m], m, "");
+    }
+    return " "+xml+" ";
+}
 
 
 function loadView() {

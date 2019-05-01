@@ -57,7 +57,7 @@ namespace SmartFhirApplication.Controllers
             clientInfoXML(xmlDoc, node3);
          
 
-            xmlDoc.Save("C:\\testReport.xml");
+            xmlDoc.Save("D:\\xmlController_testReport.xml");
         }
 
         public void beginningSection(XmlDocument xmlDoc)

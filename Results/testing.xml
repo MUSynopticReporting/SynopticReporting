@@ -1,0 +1,8 @@
+<ClinicalDocument>
+  <Procedure />
+  <component>
+    <StructuredBody>
+      <component>testing</component>
+    </StructuredBody>
+  </component>
+</ClinicalDocument>

@@ -92,6 +92,7 @@ namespace SmartFhirApplication.Controllers
             //createXML1(title);
             createXML1();
             CreateXMLtake2(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
+          //  MyXmlAction();
             //XMLController.ReportDocumentXML();
 
             return Convert.ToBase64String(bitArr); 
@@ -128,6 +129,8 @@ namespace SmartFhirApplication.Controllers
             Response.
         }  */
 
+
+
       //  public XmlDocument createXML1 (string title )
         public void createXML1 () { 
             //string docName = "D:\\SeniorDesign\\" +title + "testReport.xml"; 
@@ -149,7 +152,8 @@ namespace SmartFhirApplication.Controllers
             comp1.AppendChild(StructBody1);
             ClinicalDocROOT.AppendChild(comp1);
             //xmlDoc.Save("D:\\SeniorDesign\testReport.xml");
-            xmlDoc.Save("D:\\testReport.xml");
+           // xmlDoc.Save("D:\\testReport.xml");
+            xmlDoc.Save("C:\\Users\\Natalie\\Source\\repos\\SynopticReporting\\SynopticReporting-1\\Results\\testing.xml");
          //   return xmlDoc;
         }
 
@@ -164,16 +168,24 @@ namespace SmartFhirApplication.Controllers
                               TemplateViewModel PatientInfo)
           {
                 var xmlModelData = new XmlModel();
-             //  Create elements in XmlModel object using values in rData
-                 return new XmlResult<XmlModel>()
+             //   XmlDocument xmlDoc = new XmlDocument();
+
+            //  Create elements in XmlModel object using values in rData
+            return new XmlResult<XmlModel>()
                  {
                      Data = xmlModelData
                   };
           }
         public class XmlResult<T> : ActionResult
         {
+          //  public XDocument _doc;
             public T Data { private get; set; }
-            
+
+            //the XDocument stuff is from https://stackoverflow.com/questions/134905/return-xml-from-a-controllers-action-in-as-an-actionresult 
+            //     public XmlResult(XDocument doc1)
+            //      {
+            //     }
+
             public void ExecuteResult(ControllerContext context) // override void ExecuteResult(ControllerContext context)
             {
                 //HttpContext httpContextBase = context.HttpContext;
@@ -184,7 +196,8 @@ namespace SmartFhirApplication.Controllers
 
                 var fileName = DateTime.Now.ToString("ddmmyyyyhhss") + ".xml";
                 context.HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=" + fileName);
-                
+
+              //  XmlDocument doc1 = new XmlDocument();
                 //httpContextBase.Response.ContentType = "text/xml";
 
                 using (StringWriter writer = new StringWriter())
@@ -195,48 +208,87 @@ namespace SmartFhirApplication.Controllers
                     context.HttpContext.Response.WriteAsync(outputString, default(System.Threading.CancellationToken)); //(Encoding.UTF8, writer, Encoding.UTF8); //.ToString(writer);
   
                 }
+              //  using (var writer1 = new XmlTextWriter(context.HttpContext.Response.OutputStream, this.Encoding)
             } 
         }
-  /*      //Another try
+        /*      //Another try
+              public class XmlActionResult : ActionResult
+              {
+
+                  public object HttpContext { get; private set; }
+                  public XmlActionResult(object data)
+                  {
+                      Data = data;
+                  }
+                  public object Data { get; private set; }
+
+                  public void ExecuteResult(ControllerContext context) // override void ExecuteResult(ControllerContext context)
+                  {
+                      //HttpContext httpContextBase = context.HttpContext;
+                      context.HttpContext.Response.Clear();
+                      context.HttpContext.Response.ContentType = "text/xml";
+
+                      // context.HttpContext.Response.ContentEncoding = Encoding.UTF8;
+
+                      var fileName = DateTime.Now.ToString("ddmmyyyyhhss") + ".xml";
+                      context.HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=" + fileName);
+
+                      using (StringWriter writer = new StringWriter())
+                      {
+                          //  XmlSerializer xml = new XmlSerializer(typeof(T));
+                          XmlSerializer xml = new XmlSerializer(typeof());
+                          xml.Serialize(writer, Data);
+                          String outputString = writer.ToString();
+                          context.HttpContext.Response.WriteAsync(outputString, default(System.Threading.CancellationToken)); 
+                          //(Encoding.UTF8, writer, Encoding.UTF8); //.ToString(writer);                                                                                               
+                      // context.HttpContext.Response.WriteAsync( //(writer); //Write(writer);
+                        // to serialize the model to the response stream :
+                       // context.HttpContext.Response.OnCompleted()
+
+                      }
+                  }
+              }
+      */
+        //This attempt from https://stackoverflow.com/questions/134905/return-xml-from-a-controllers-action-in-as-an-actionresult
+    /*    public ActionResult MyXmlAction()
+        {
+            var xml2 = new XDocument(
+                new XElement("root", new XAttribute("version", "2.0"),
+                new XElement("child", "Hello World")));
+            return new XmlActionResult(xml2);
+        }
+
         public class XmlActionResult : ActionResult
         {
-            
-            public object HttpContext { get; private set; }
-            public XmlActionResult(object data)
+            public XDocument _doc1;
+            public Formatting Formatting { get; set; }
+            public string MimeType { get; set; }
+            public XmlActionResult(XDocument document)
             {
-                Data = data;
+                if (document == null)
+                    throw new ArgumentNullException("document");
+
+                _doc1 = document;
+                MimeType = "text/xml";
+                Formatting = Formatting.None;
             }
-            public object Data { get; private set; }
-
-            public void ExecuteResult(ControllerContext context) // override void ExecuteResult(ControllerContext context)
+            public override void ExecuteResult(ControllerContext context)
             {
-                //HttpContext httpContextBase = context.HttpContext;
                 context.HttpContext.Response.Clear();
-                context.HttpContext.Response.ContentType = "text/xml";
+                context.HttpContext.Response.ContentType = MimeType;
 
-                // context.HttpContext.Response.ContentEncoding = Encoding.UTF8;
-
-                var fileName = DateTime.Now.ToString("ddmmyyyyhhss") + ".xml";
-                context.HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=" + fileName);
-
-                using (StringWriter writer = new StringWriter())
-                {
-                    //  XmlSerializer xml = new XmlSerializer(typeof(T));
-                    XmlSerializer xml = new XmlSerializer(typeof());
-                    xml.Serialize(writer, Data);
-                    String outputString = writer.ToString();
-                    context.HttpContext.Response.WriteAsync(outputString, default(System.Threading.CancellationToken)); 
-                    //(Encoding.UTF8, writer, Encoding.UTF8); //.ToString(writer);                                                                                               
-                // context.HttpContext.Response.WriteAsync( //(writer); //Write(writer);
-                  // to serialize the model to the response stream :
-                 // context.HttpContext.Response.OnCompleted()
-
-                }
+                using (var writer = new XmlTextWriter(context.HttpContext.Response.OutputStream, Encoding.UTF8) { Formatting = Formatting })
+                    _doc1.WriteTo(writer);
             }
         }
 */
-        // Takes in a title and a series of nodes
-        public Document CreatePDF(string title,
+            //   public ActionResult ReturnXML()
+            //   {
+            //       return File(Encoding.UTF8.GetBytes(GenerateXmlFeed().OuterXml), "text/xml");
+            //    }
+
+            // Takes in a title and a series of nodes
+            public Document CreatePDF(string title,
                             TemplateViewModel Procedure,
                             TemplateViewModel ClinicalInformation,
                             TemplateViewModel Comparison,
