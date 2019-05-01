@@ -2,19 +2,6 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "CsvHelper/12.0.1": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.CSharp": "4.4.0",
-          "System.Reflection.TypeExtensions": "4.4.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/CsvHelper.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/CsvHelper.dll": {}
-        }
-      },
       "Hl7.Fhir.ElementModel/1.1.3": {
         "type": "package",
         "dependencies": {
@@ -2977,24 +2964,6 @@
           "lib/netstandard1.6/NuGet.Frameworks.dll": {}
         }
       },
-      "NUnit/3.11.0": {
-        "type": "package",
-        "dependencies": {
-          "NETStandard.Library": "2.0.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/nunit.framework.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/nunit.framework.dll": {}
-        },
-        "build": {
-          "build/NUnit.props": {}
-        }
-      },
-      "NUnit.ConsoleRunner/3.10.0": {
-        "type": "package"
-      },
       "Remotion.Linq/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -4139,13 +4108,17 @@
           "ref/netstandard1.0/System.Reflection.Primitives.dll": {}
         }
       },
-      "System.Reflection.TypeExtensions/4.4.0": {
+      "System.Reflection.TypeExtensions/4.3.0": {
         "type": "package",
+        "dependencies": {
+          "System.Reflection": "4.3.0",
+          "System.Runtime": "4.3.0"
+        },
         "compile": {
-          "ref/netcoreapp2.0/_._": {}
+          "ref/netstandard1.5/System.Reflection.TypeExtensions.dll": {}
         },
         "runtime": {
-          "lib/netcoreapp2.0/_._": {}
+          "lib/netstandard1.5/System.Reflection.TypeExtensions.dll": {}
         }
       },
       "System.Resources.ResourceManager/4.3.0": {
@@ -4892,20 +4865,6 @@
     }
   },
   "libraries": {
-    "CsvHelper/12.0.1": {
-      "sha512": "42BRMYUKVFAY6PaFivQgoZY4+zJIgvIGjtpj0SgdElcrNgaezdx8BnFzhTOXnvTKqIsC4zTCmKUycUeEjn1Kvg==",
-      "type": "package",
-      "path": "csvhelper/12.0.1",
-      "files": [
-        ".signature.p7s",
-        "csvhelper.12.0.1.nupkg.sha512",
-        "csvhelper.nuspec",
-        "lib/net45/CsvHelper.dll",
-        "lib/net45/CsvHelper.xml",
-        "lib/netstandard2.0/CsvHelper.dll",
-        "lib/netstandard2.0/CsvHelper.xml"
-      ]
-    },
     "Hl7.Fhir.ElementModel/1.1.3": {
       "sha512": "hHm2veSg6RCaPQSGCeuINKqpeb1sRBtD7FbYiREdBbqeo2rR5Kr+YtWwOZI9GMuwHSCZIJRU5jIeLLbSiuvc+g==",
       "type": "package",
@@ -6340,7 +6299,7 @@
       ]
     },
     "Microsoft.AspNetCore.Razor.Design/2.1.1": {
-      "sha512": "BOK5fckW9v7xWjpEI6bPGwkjw10OPVASZcAa8HoWJo/0Mmg4Azddj92v8noU+YgvD/6zNZ9o/RiRXXKxk5rYwQ==",
+      "sha512": "f8PKGcxiezL1RVqmnmrazj24Mj4KCTSXqwdotl7Lc+82h8iLV7ItxEIShTJakG7M9iw0ZuCocM0J/IhYesdQrg==",
       "type": "package",
       "path": "microsoft.aspnetcore.razor.design/2.1.1",
       "files": [
@@ -6677,17 +6636,17 @@
       ]
     },
     "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
-      "sha512": "noU4HcPqHcxSH/83uDLSEy+lpj2IHBC6K82BKqF1It5BiGZ9BQSoh8ELCHpXsN7NBEw4k/pTmtP5usdecx/IAQ==",
+      "sha512": "HS3iRWZKcUw/8eZ/08GXKY2Bn7xNzQPzf8gRPHGSowX7u7XXu9i9YEaBeBNKUXWfI7qjvT2zXtLUvbN0hds8vg==",
       "type": "package",
       "path": "microsoft.codeanalysis.analyzers/1.1.0",
       "files": [
-        "Microsoft.CodeAnalysis.Analyzers.1.1.0.nupkg.sha512",
-        "Microsoft.CodeAnalysis.Analyzers.nuspec",
         "ThirdPartyNotices.rtf",
         "analyzers/dotnet/cs/Microsoft.CodeAnalysis.Analyzers.dll",
         "analyzers/dotnet/cs/Microsoft.CodeAnalysis.CSharp.Analyzers.dll",
         "analyzers/dotnet/vb/Microsoft.CodeAnalysis.Analyzers.dll",
         "analyzers/dotnet/vb/Microsoft.CodeAnalysis.VisualBasic.Analyzers.dll",
+        "microsoft.codeanalysis.analyzers.1.1.0.nupkg.sha512",
+        "microsoft.codeanalysis.analyzers.nuspec",
         "tools/install.ps1",
         "tools/uninstall.ps1"
       ]
@@ -8428,63 +8387,6 @@
         "lib/netstandard1.6/NuGet.Frameworks.xml",
         "nuget.frameworks.4.7.0.nupkg.sha512",
         "nuget.frameworks.nuspec"
-      ]
-    },
-    "NUnit/3.11.0": {
-      "sha512": "zecrYxUA5p5w8AZ2bvbBbiUIcrQnZAVPrziNMSWMdcOi0D2Oe7yKUNivWPIQMcUwQDHmWtS/ijnD48ubU/eHZQ==",
-      "type": "package",
-      "path": "nunit/3.11.0",
-      "files": [
-        ".signature.p7s",
-        "CHANGES.md",
-        "LICENSE.txt",
-        "NOTICES.txt",
-        "build/NUnit.props",
-        "lib/net20/NUnit.System.Linq.dll",
-        "lib/net20/nunit.framework.dll",
-        "lib/net20/nunit.framework.pdb",
-        "lib/net20/nunit.framework.xml",
-        "lib/net35/nunit.framework.dll",
-        "lib/net35/nunit.framework.pdb",
-        "lib/net35/nunit.framework.xml",
-        "lib/net40/nunit.framework.dll",
-        "lib/net40/nunit.framework.pdb",
-        "lib/net40/nunit.framework.xml",
-        "lib/net45/nunit.framework.dll",
-        "lib/net45/nunit.framework.pdb",
-        "lib/net45/nunit.framework.xml",
-        "lib/netstandard1.4/nunit.framework.dll",
-        "lib/netstandard1.4/nunit.framework.pdb",
-        "lib/netstandard1.4/nunit.framework.xml",
-        "lib/netstandard2.0/nunit.framework.dll",
-        "lib/netstandard2.0/nunit.framework.pdb",
-        "lib/netstandard2.0/nunit.framework.xml",
-        "nunit.3.11.0.nupkg.sha512",
-        "nunit.nuspec"
-      ]
-    },
-    "NUnit.ConsoleRunner/3.10.0": {
-      "sha512": "Wrjwm/f/lhfb0oFptCbgfAyaP9n9E9Cz5YD8/p0jgBZwtXqT+5exCwMuOB67nCAnHprGmr5yd/lnTRcR6cugLw==",
-      "type": "package",
-      "path": "nunit.consolerunner/3.10.0",
-      "files": [
-        ".signature.p7s",
-        "CHANGES.txt",
-        "LICENSE.txt",
-        "NOTICES.txt",
-        "nunit.consolerunner.3.10.0.nupkg.sha512",
-        "nunit.consolerunner.nuspec",
-        "tools/Mono.Cecil.dll",
-        "tools/nunit-agent-x86.exe",
-        "tools/nunit-agent-x86.exe.config",
-        "tools/nunit-agent.exe",
-        "tools/nunit-agent.exe.config",
-        "tools/nunit.engine.api.dll",
-        "tools/nunit.engine.api.xml",
-        "tools/nunit.engine.dll",
-        "tools/nunit.nuget.addins",
-        "tools/nunit3-console.exe",
-        "tools/nunit3-console.exe.config"
       ]
     },
     "Remotion.Linq/2.2.0": {
@@ -10501,12 +10403,10 @@
       ]
     },
     "System.Linq.Queryable/4.0.1": {
-      "sha512": "4tA2wVs4duN1v3PBF9leC1182omKCj0r3ZjHgsc+iXCdGve5Kf4k5j/OdbrIDTCYTAySSnfoYmUxevsmMn/u8A==",
+      "sha512": "Yn/WfYe9RoRfmSLvUt2JerP0BTGGykCZkQPgojaxgzF2N0oPo+/AhB8TXOpdCcNlrG3VRtsamtK2uzsp3cqRVw==",
       "type": "package",
       "path": "system.linq.queryable/4.0.1",
       "files": [
-        "System.Linq.Queryable.4.0.1.nupkg.sha512",
-        "System.Linq.Queryable.nuspec",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/monoandroid10/_._",
@@ -10554,7 +10454,9 @@
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "ref/xamarintvos10/_._",
-        "ref/xamarinwatchos10/_._"
+        "ref/xamarinwatchos10/_._",
+        "system.linq.queryable.4.0.1.nupkg.sha512",
+        "system.linq.queryable.nuspec"
       ]
     },
     "System.Memory/4.5.1": {
@@ -10700,11 +10602,10 @@
       ]
     },
     "System.Net.Requests/4.3.0": {
-      "sha512": "kLtBoQKr64ek1T7qcjFgNL9+d4TQbtP8kOY7sUOjBxJDbIrCzzBf3Y1itktzMYpGwa1+IE26QqAVHdiwBdcdog==",
+      "sha512": "OZNUuAs0kDXUzm7U5NZ1ojVta5YFZmgT2yxBqsQ7Eseq5Ahz88LInGRuNLJ/NP2F8W1q7tse1pKDthj3reF5QA==",
       "type": "package",
       "path": "system.net.requests/4.3.0",
       "files": [
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -10782,11 +10683,10 @@
       ]
     },
     "System.Net.WebHeaderCollection/4.3.0": {
-      "sha512": "Ss4a5WoNcqnEzZBac/l4FeNtF7GupFjaC1MWaN76oz6GipsBE+rBaerD4TM1MD8kuWu5UdM34v7uDibmbiWhPw==",
+      "sha512": "XZrXYG3c7QV/GpWeoaRC02rM6LH2JJetfVYskf35wdC/w2fFDFMphec4gmVH2dkll6abtW14u9Rt96pxd9YH2A==",
       "type": "package",
       "path": "system.net.webheadercollection/4.3.0",
       "files": [
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -11293,24 +11193,19 @@
         "system.reflection.primitives.nuspec"
       ]
     },
-    "System.Reflection.TypeExtensions/4.4.0": {
-      "sha512": "JRxOAH6by+wn1gNnZc9jf2HbO/szhMJuLY2w44nEW77354WntXlFzWSVkx6280Uvcl3URZ/At+444vjX0/X1Aw==",
+    "System.Reflection.TypeExtensions/4.3.0": {
+      "sha512": "7u6ulLcZbyxB5Gq0nMkQttcdBTx57ibzw+4IOXEfR+sXYQoHvjW5LTLyNr8O22UIMrqYbchJQJnos4eooYzYJA==",
       "type": "package",
-      "path": "system.reflection.typeextensions/4.4.0",
+      "path": "system.reflection.typeextensions/4.3.0",
       "files": [
-        ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
         "lib/net46/System.Reflection.TypeExtensions.dll",
-        "lib/net461/System.Reflection.TypeExtensions.dll",
+        "lib/net462/System.Reflection.TypeExtensions.dll",
         "lib/netcore50/System.Reflection.TypeExtensions.dll",
-        "lib/netcoreapp1.0/System.Reflection.TypeExtensions.dll",
-        "lib/netcoreapp2.0/_._",
-        "lib/netstandard1.3/System.Reflection.TypeExtensions.dll",
         "lib/netstandard1.5/System.Reflection.TypeExtensions.dll",
-        "lib/netstandard2.0/System.Reflection.TypeExtensions.dll",
         "lib/xamarinios10/_._",
         "lib/xamarinmac20/_._",
         "lib/xamarintvos10/_._",
@@ -11318,9 +11213,7 @@
         "ref/MonoAndroid10/_._",
         "ref/MonoTouch10/_._",
         "ref/net46/System.Reflection.TypeExtensions.dll",
-        "ref/net461/System.Reflection.TypeExtensions.dll",
-        "ref/net461/System.Reflection.TypeExtensions.xml",
-        "ref/netcoreapp2.0/_._",
+        "ref/net462/System.Reflection.TypeExtensions.dll",
         "ref/netstandard1.3/System.Reflection.TypeExtensions.dll",
         "ref/netstandard1.3/System.Reflection.TypeExtensions.xml",
         "ref/netstandard1.3/de/System.Reflection.TypeExtensions.xml",
@@ -11343,17 +11236,13 @@
         "ref/netstandard1.5/ru/System.Reflection.TypeExtensions.xml",
         "ref/netstandard1.5/zh-hans/System.Reflection.TypeExtensions.xml",
         "ref/netstandard1.5/zh-hant/System.Reflection.TypeExtensions.xml",
-        "ref/netstandard2.0/System.Reflection.TypeExtensions.dll",
-        "ref/netstandard2.0/System.Reflection.TypeExtensions.xml",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "ref/xamarintvos10/_._",
         "ref/xamarinwatchos10/_._",
         "runtimes/aot/lib/netcore50/System.Reflection.TypeExtensions.dll",
-        "system.reflection.typeextensions.4.4.0.nupkg.sha512",
-        "system.reflection.typeextensions.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "system.reflection.typeextensions.4.3.0.nupkg.sha512",
+        "system.reflection.typeextensions.nuspec"
       ]
     },
     "System.Resources.ResourceManager/4.3.0": {
@@ -13404,14 +13293,11 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
-      "CsvHelper >= 12.0.1",
       "Hl7.Fhir.Specification.STU3 >= 1.1.3",
       "Microsoft.AspNet.Mvc >= 5.2.7",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.NETCore.App >= 2.1.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.1.1",
-      "NUnit >= 3.11.0",
-      "NUnit.ConsoleRunner >= 3.10.0",
       "Newtonsoft.Json >= 12.0.1",
       "System.Xml.ReaderWriter >= 4.3.1",
       "iTextSharp >= 5.5.13",
@@ -13420,23 +13306,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Natalie\\.nuget\\packages\\": {},
+    "C:\\Users\\jared\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Natalie\\Source\\repos\\SynopticReporting\\SynopticReporting-1\\SmartFhirApplication.csproj",
+      "projectUniqueName": "C:\\Users\\jared\\source\\repos\\SmartFhirApplication\\SmartFhirApplication\\SmartFhirApplication.csproj",
       "projectName": "SmartFhirApplication",
-      "projectPath": "C:\\Users\\Natalie\\Source\\repos\\SynopticReporting\\SynopticReporting-1\\SmartFhirApplication.csproj",
-      "packagesPath": "C:\\Users\\Natalie\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Natalie\\Source\\repos\\SynopticReporting\\SynopticReporting-1\\obj\\",
+      "projectPath": "C:\\Users\\jared\\source\\repos\\SmartFhirApplication\\SmartFhirApplication\\SmartFhirApplication.csproj",
+      "packagesPath": "C:\\Users\\jared\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\jared\\source\\repos\\SmartFhirApplication\\SmartFhirApplication\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Natalie\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\jared\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -13460,10 +13346,6 @@
     "frameworks": {
       "netcoreapp2.1": {
         "dependencies": {
-          "CsvHelper": {
-            "target": "Package",
-            "version": "[12.0.1, )"
-          },
           "Hl7.Fhir.Specification.STU3": {
             "target": "Package",
             "version": "[1.1.3, )"
@@ -13486,14 +13368,6 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[2.1.1, )"
-          },
-          "NUnit": {
-            "target": "Package",
-            "version": "[3.11.0, )"
-          },
-          "NUnit.ConsoleRunner": {
-            "target": "Package",
-            "version": "[3.10.0, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",
