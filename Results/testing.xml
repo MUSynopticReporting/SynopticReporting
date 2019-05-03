@@ -2,7 +2,7 @@
   <Procedure />
   <component>
     <StructuredBody>
-      <component>testing</component>
+      <component>data goes here</component>
     </StructuredBody>
   </component>
 </ClinicalDocument>

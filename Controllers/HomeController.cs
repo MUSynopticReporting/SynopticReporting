@@ -29,7 +29,6 @@ using System.Web;
 using static SmartFhirApplication.Controllers.FHIRController;
 using Microsoft.AspNetCore.Http;
 using System.Text;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace SmartFhirApplication.Controllers
 {
@@ -90,7 +89,9 @@ namespace SmartFhirApplication.Controllers
             string workingDirectory = Environment.CurrentDirectory;
             var bitArr = GetBinaryFile("results/" + title + " for Patient_01.pdf");
             //Make XMLdoc
-            createXML1();
+            //createXML1();
+            XMLtheFinalFrontier(title);
+
             return Convert.ToBase64String(bitArr); 
         }
         
@@ -309,5 +310,261 @@ namespace SmartFhirApplication.Controllers
             }
             return bytes;
         }
+
+        //EVERYTHING AFTER THIS POINT IS FOR XML
+        //Equivenlent to a XML main function 
+        public void XMLtheFinalFrontier(string title)
+        {
+            string fileLocation = "C:\\Users\\Natalie\\Source\\repos\\SynopticReporting\\SynopticReporting-1\\Results\\xml_" + title + ".xml";
+            XmlDocument xmlDoc = new XmlDocument();
+            //Create an XML-declaration using XmlDocument.CreateXmlDeclaration Method:
+
+            XmlNode docNode = xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);
+            xmlDoc.AppendChild(docNode);
+            xmlDoc.AppendChild(xmlDoc.CreateProcessingInstruction("xml-stylesheet",
+                                "type='text/xsl' href='CDA-DIR.xsl'"));
+            XmlNode RootClinDoc = xmlDoc.CreateElement("ClinicalDocument");
+
+            //Add general header part here 
+            GenHeader_xml(xmlDoc, RootClinDoc, title);
+            //start of all Sections 
+            XmlNode component = xmlDoc.CreateElement("component");
+            XmlNode structBody = xmlDoc.CreateElement("structuredBody");
+
+            //call each section (with structBody)
+            ClinInfo_xml(xmlDoc, structBody);
+            ImagProc_xml(xmlDoc, structBody);
+            Findings_xml(xmlDoc, structBody);
+            Impressions_xml(xmlDoc, structBody);
+
+            //end of Sections 
+            component.AppendChild(structBody);
+            RootClinDoc.AppendChild(component);
+            xmlDoc.AppendChild(RootClinDoc);
+            xmlDoc.Save(fileLocation);
+            //xmlDoc.Save("D:\\xmlOutput.xml");
+            //xmlDoc.Save("C:\\Users\\Natalie\\Source\\repos\\SynopticReporting\\SynopticReporting-1\\Results\\testing.xml");
+        }
+
+        public void GenHeader_xml(XmlDocument xmlDoc, XmlNode Root, string title)
+        {
+            string timing = DateTime.Now.ToString("yyyyMMddHHmmss");
+
+            //templateId
+            XmlElement templateIdElement = xmlDoc.CreateElement("templateId");
+            XmlAttribute rootAtt = xmlDoc.CreateAttribute("root");
+            rootAtt.Value = "1.2.840.10008.9.20";    //Value may change.    
+            templateIdElement.Attributes.Append(rootAtt);
+            Root.AppendChild(templateIdElement);
+            //typeId
+            XmlElement TypeidElement = xmlDoc.CreateElement("TypeId");
+            rootAtt = xmlDoc.CreateAttribute("root");
+            rootAtt.Value = "2.16.840.1.113883.​1.3";    //Value may change. 
+            TypeidElement.Attributes.Append(rootAtt);
+            XmlAttribute extension = xmlDoc.CreateAttribute("extension");
+            extension.Value = "POCD_HD000040";
+            TypeidElement.Attributes.Append(extension);    
+            Root.AppendChild(TypeidElement);
+            //id
+            XmlElement idElement = xmlDoc.CreateElement("id");
+            rootAtt = xmlDoc.CreateAttribute("root");
+            rootAtt.Value = "temp";    //Value will change. 
+            idElement.Attributes.Append(rootAtt);
+            Root.AppendChild(idElement);
+            //title 
+            XmlNode titleNode = xmlDoc.CreateElement("title");
+            titleNode.InnerText = title;
+            Root.AppendChild(titleNode);
+            //Creation time
+            XmlElement effTime = xmlDoc.CreateElement("effectiveTime");
+            XmlAttribute timeValue = xmlDoc.CreateAttribute("value");
+            timeValue.Value = timing;
+            effTime.Attributes.Append(timeValue);
+            Root.AppendChild(effTime);
+            //Confidentiality
+            XmlElement confEl = xmlDoc.CreateElement("confidentialityCode");
+            Root.AppendChild(confEl); //should have information in this node but cannot determine what value 
+            //Language Code 
+            XmlElement langCode = xmlDoc.CreateElement("languageCode");
+            XmlAttribute codeAtt = xmlDoc.CreateAttribute("code");
+            codeAtt.Value = "en-US";    //for now, assume all are English    
+            langCode.Attributes.Append(codeAtt);
+            Root.AppendChild(langCode);
+            //Patient 
+            //Author 
+
+            //Recipient 
+        }
+
+        //Clinical Information Section 
+        public void ClinInfo_xml(XmlDocument xmlDoc, XmlNode Root_struct)
+        {
+            //initialize values for SectionHeader_xml
+            string templateId_val = "1.2.840.10008.9.2";
+            string id_val = "1.2.840.10213.2.62.994948294044785528";    //will change 
+            string code_val = "55752-0";
+            string dispName_val = "Clinical Information";
+            string title_val = "Clinical Information";
+            string text_val = "This case... will need to be read";
+
+            XmlNode component = xmlDoc.CreateElement("component");
+         //   XmlElement startNote = xmlDoc.CreateElement("ClinicalInformationSection");//might not be the correct type for the section header
+          //  component.AppendChild(startNote);
+            //section 
+            XmlNode section = xmlDoc.CreateElement("section");
+            XmlAttribute classAtt = xmlDoc.CreateAttribute("classCode");
+            classAtt.Value = "DOCSECT";
+            section.Attributes.Append(classAtt);
+            XmlAttribute moodAtt = xmlDoc.CreateAttribute("moodCode");
+            moodAtt.Value = "EVN";
+            section.Attributes.Append(moodAtt);
+
+            //call Section header 
+            SectionHeader_xml(xmlDoc, section, templateId_val, id_val, code_val, dispName_val, title_val, text_val);
+            component.AppendChild(section);
+        //    XmlElement endNote = xmlDoc.CreateElement("End of Clinical Information Section");
+        //    component.AppendChild(endNote);
+            //close out Clinical Information component
+            Root_struct.AppendChild(component);
+        }
+
+        //Imaging Procedure Description Section
+        public void ImagProc_xml(XmlDocument xmlDoc, XmlNode Root_struct)
+        {
+            string templateId_val = "1.2.840.10008.9.3";
+            string id_val = "1.2.840.10213.2.62.994948294044785528";    //value will change 
+            string code_val = "55111-9";
+            string dispName_val = "Current Imaging Procedure Description";
+            string title_val = "Imaging Procedure Description";
+            string text_val = "This case... will need to be read";
+
+            XmlNode component = xmlDoc.CreateElement("component");
+        //    XmlElement startNote = xmlDoc.CreateElement("Imaging Procedure Description Section");//might not be the correct type for the section header
+        //    component.AppendChild(startNote);
+            //section 
+            XmlNode section = xmlDoc.CreateElement("section");
+            XmlAttribute classAtt = xmlDoc.CreateAttribute("classCode");
+            classAtt.Value = "DOCSECT";
+            section.Attributes.Append(classAtt);
+            XmlAttribute moodAtt = xmlDoc.CreateAttribute("moodCode");
+            moodAtt.Value = "EVN";
+            section.Attributes.Append(moodAtt);
+
+            //call Section header 
+            SectionHeader_xml(xmlDoc, section, templateId_val, id_val, code_val, dispName_val, title_val, text_val);
+            component.AppendChild(section);
+        //    XmlElement endNote = xmlDoc.CreateElement("End of Imaging Procedure Description Section");
+        //    component.AppendChild(endNote);
+            //close out Imaging Procedure Description component
+            Root_struct.AppendChild(component);
+        }
+
+        //Findings Section 
+        public void Findings_xml(XmlDocument xmlDoc, XmlNode Root_struct)
+        {
+            string templateId_val = "2.16.840.1.113883.10.20.6.1.2";
+            string id_val = "1.2.840.10213.2.62.994948294044785528";    //this value will change
+            string code_val = "59776-5";
+            string dispName_val = "Procedure Findings";
+            string title_val = "Findings";
+            string text_val = "This case... will need to be read";
+
+            XmlNode component = xmlDoc.CreateElement("component");
+        //    XmlElement startNote = xmlDoc.CreateElement("Findings Section");//might not be the correct type for the section header
+        //    component.AppendChild(startNote);
+            //section --might need to move this up since reference section later 
+            XmlNode section = xmlDoc.CreateElement("section");
+            XmlAttribute classAtt = xmlDoc.CreateAttribute("classCode");
+            classAtt.Value = "DOCSECT";
+            section.Attributes.Append(classAtt);
+            XmlAttribute moodAtt = xmlDoc.CreateAttribute("moodCode");
+            moodAtt.Value = "EVN";
+            section.Attributes.Append(moodAtt);
+
+            //call Section header 
+            SectionHeader_xml(xmlDoc, section, templateId_val, id_val, code_val, dispName_val, title_val, text_val);
+            component.AppendChild(section);
+        //    XmlElement endNote = xmlDoc.CreateElement("End of Findings Section");
+        //    component.AppendChild(endNote);
+            //close out Findings component
+            Root_struct.AppendChild(component);
+        }
+
+        /*
+          Impressions Section
+          Standard followed from DICOM part20 table in section 9.6 
+        */
+        public void Impressions_xml(XmlDocument xmlDoc, XmlNode Root_struct)
+        {
+            string templateId_val = "1.2.840.10008.9.5";    //value may change 
+            string id_val = "1.2.840.10213.2.62.994948294044785528";
+            string code_val = "19005-8";
+            string dispName_val = "Impressions";
+            string title_val = "Impressions";
+            string text_val = "This case... will need to be read";
+
+            XmlNode component = xmlDoc.CreateElement("component");
+        //    XmlElement startNote = xmlDoc.CreateElement("Impressions Section");//might not be the correct type for the section header
+        //    component.AppendChild(startNote);
+            //section --might need to move this up since reference section later 
+            XmlNode section = xmlDoc.CreateElement("section");
+            XmlAttribute classAtt = xmlDoc.CreateAttribute("classCode");
+            classAtt.Value = "DOCSECT";
+            section.Attributes.Append(classAtt);
+            XmlAttribute moodAtt = xmlDoc.CreateAttribute("moodCode");
+            moodAtt.Value = "EVN";
+            section.Attributes.Append(moodAtt);
+
+            //call Section header 
+            SectionHeader_xml(xmlDoc, section, templateId_val, id_val, code_val, dispName_val, title_val, text_val);
+            component.AppendChild(section);
+         //   XmlElement endNote = xmlDoc.CreateElement("End of Impressions Section");
+        //    component.AppendChild(endNote);
+            //close out Impressions component
+            Root_struct.AppendChild(component);
+        }
+
+        public void SectionHeader_xml(XmlDocument xmlDoc, XmlNode section, string templateId_val,
+                                        string id_val, string code_val, string dispName_val,
+                                        string title_val, string text_val)
+        {
+            //templateId
+            XmlElement templateIdElement = xmlDoc.CreateElement("templateId");
+            XmlAttribute rootAtt = xmlDoc.CreateAttribute("root");
+            rootAtt.Value = templateId_val;    //Value may change.    
+            templateIdElement.Attributes.Append(rootAtt);
+            section.AppendChild(templateIdElement);
+            //id
+            XmlElement idElement = xmlDoc.CreateElement("id");
+            rootAtt = xmlDoc.CreateAttribute("root");
+            rootAtt.Value = id_val;    //Value will change. 
+            idElement.Attributes.Append(rootAtt);
+            section.AppendChild(idElement);
+            //code 
+            XmlElement codeElement = xmlDoc.CreateElement("code");
+            XmlAttribute codeAtt = xmlDoc.CreateAttribute("code");
+            codeAtt.Value = code_val;   //unique per section  
+            codeElement.Attributes.Append(codeAtt);
+            codeAtt = xmlDoc.CreateAttribute("codeSystem");
+            codeAtt.Value = "2.16.840.1.113883.6.1";    //All LOINC have the same system code 
+            codeElement.Attributes.Append(codeAtt);
+            codeAtt = xmlDoc.CreateAttribute("codeSystemName");
+            codeAtt.Value = "LOINC";  //All are LOINC
+            codeElement.Attributes.Append(codeAtt);
+            codeAtt = xmlDoc.CreateAttribute("displayName");
+            codeAtt.Value = dispName_val;    //put in value call here for loop and such to get value 
+            codeElement.Attributes.Append(codeAtt);
+            section.AppendChild(codeElement);
+            //title 
+            XmlNode titleNode = xmlDoc.CreateElement("title");
+            titleNode.InnerText = title_val;
+            section.AppendChild(titleNode);
+            //Text
+            XmlNode textNode = xmlDoc.CreateElement("text");
+            textNode.InnerText = text_val; //will need to be read in from template 
+            section.AppendChild(textNode);
+        }
+
+
     }
 }

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type='text/xsl' href='CDA-DIR.xsl'?>
+<ClinicalDocument>
+  <templateId root="1.2.840.10008.9.20" />
+  <TypeId root="2.16.840.1.113883.​1.3" extension="POCD_HD000040" />
+  <id root="temp" />
+  <title>CT Sinuses</title>
+  <effectiveTime value="20190503040752" />
+  <confidentialityCode />
+  <languageCode code="en-US" />
+  <component>
+    <structuredBody>
+      <component>
+        <section classCode="DOCSECT" moodCode="EVN">
+          <templateId root="1.2.840.10008.9.2" />
+          <id root="1.2.840.10213.2.62.994948294044785528" />
+          <code code="55752-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Clinical Information" />
+          <title>Clinical Information</title>
+          <text>This case... will need to be read</text>
+        </section>
+      </component>
+      <component>
+        <section classCode="DOCSECT" moodCode="EVN">
+          <templateId root="1.2.840.10008.9.3" />
+          <id root="1.2.840.10213.2.62.994948294044785528" />
+          <code code="55111-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Current Imaging Procedure Description" />
+          <title>Imaging Procedure Description</title>
+          <text>This case... will need to be read</text>
+        </section>
+      </component>
+      <component>
+        <section classCode="DOCSECT" moodCode="EVN">
+          <templateId root="2.16.840.1.113883.10.20.6.1.2" />
+          <id root="1.2.840.10213.2.62.994948294044785528" />
+          <code code="59776-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Procedure Findings" />
+          <title>Findings</title>
+          <text>This case... will need to be read</text>
+        </section>
+      </component>
+      <component>
+        <section classCode="DOCSECT" moodCode="EVN">
+          <templateId root="1.2.840.10008.9.5" />
+          <id root="1.2.840.10213.2.62.994948294044785528" />
+          <code code="19005-8" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Impressions" />
+          <title>Impressions</title>
+          <text>This case... will need to be read</text>
+        </section>
+      </component>
+    </structuredBody>
+  </component>
+</ClinicalDocument>
