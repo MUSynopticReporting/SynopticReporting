@@ -149,6 +149,7 @@ namespace SmartFhirApplication.Controllers
                 doc.Add(titleParagraph);
                 doc.Add(patientParagraph);
                 doc.Add(procedureParagraph);
+                doc.Add(ciParagraph);
                 doc.Add(comparisonParagraph);
                 doc.Add(findingsParagraph);
                 doc.Add(impressionParagraph);
