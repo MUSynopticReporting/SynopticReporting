@@ -28,9 +28,17 @@ function setupNavigation(smart) {
             dataType: 'json',
             success: function (data) {
                 // Get a list of file names and append each to view list
+                var i = 1;
                 $.each(data, function (index, val) {
+                    var newRow = $("<tr>");
+                    var cols = "";
                     var sub = val.substring(0, val.length - 5);
-                    $('#viewSelected').append('<option value="' + sub + '">' + sub + '</option>');
+                    cols += '<th scope="row">' + i + '</th>';
+                    i = i + 1;
+                    cols += '<td><a href="#" onclick="loadView(\'' + sub + '\'); return false;">' + sub + '</a></td>';
+                    newRow.append(cols);
+                    $("table").append(newRow);
+                    //$('#viewSelected').append('<option value="' + sub + '">' + sub + '</option>');
                 });
             },
             error: function (data, status, error) {
@@ -85,11 +93,6 @@ $("#submit").click(function submit(e) {
                 "data": data,
                 "title": title,
             }
-        /*    xmlDoc = {
-                "contentType": "text/xml",
-                data: xmlString, 
-            }
-            */
             var coding = {
                 "code": "18748-4",
                 "display": "Diagnostic Imaging Report",
@@ -118,7 +121,6 @@ $("#submit").click(function submit(e) {
             //    xmlDoc
             //]
             console.log(pdfDoc);
-            console.log(xmlDoc);
 
             var res = {
                 "status": "final",
@@ -145,39 +147,12 @@ $("#submit").click(function submit(e) {
     });
 
 });
-/*
-function json2xml(o, tab) {
-    var toXml = function (v, name, ind) {
-        var xml = "";
-        if (typeof (v) == "object") {
-            var hasChild = false;
-            for (var m in v) {
-                if (m.charAt(0) == "@") {
-                    xml += " " + m.substr(1) + "=\"" + v[m].toString() + "\"";
-                } else{
-                    hasChild = true;
-                }
-            }
-            if (hasChild) {
-                for (var m in v) {
-                    if (m == "name") {
-                        xml += "<" + v[m] + ">" + v['value'] + "";
-                    }
-                }
-            }
-        }
-        return xml;
-    }, xml = "";
-    for (var m in o) {
-        xml += toXml(o[m], m, "");
-    }
-    return " "+xml+" ";
-}
-*/
 
-function loadView() {
-    var e = document.getElementById("viewSelected");
-    var strUser = e.options[e.selectedIndex].value;
+
+function loadView(strUser) {
+    console.log(strUser);
+    //var e = document.getElementById("viewSelected");
+    //var strUser = e.options[e.selectedIndex].value;
     window.location.href = "/Home/" + "LoadTemplate?path=" + strUser;
     $.ajax({
         url: '/Home/LoadTemplate',
@@ -189,7 +164,8 @@ function loadView() {
         }
     })
 }
-document.getElementById("viewLoader").addEventListener("click", loadView);
+//document.getElementById("viewLoader").addEventListener("click", loadView);
+//XMLDocument docXML = new XMLDocument(loadView);   //I don't think I can do this 
 
 
 // Ok template 16 sucks

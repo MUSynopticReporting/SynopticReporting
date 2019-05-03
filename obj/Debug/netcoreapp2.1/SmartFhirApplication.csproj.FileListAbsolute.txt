@@ -67,3 +67,4 @@ C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\
 C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\netcoreapp2.1\SmartFhirApplication.dll
 C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\netcoreapp2.1\SmartFhirApplication.pdb
 C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\netcoreapp2.1\SmartFhirApplication.csproj.CopyComplete
+C:\Users\jared\source\repos\SmartFhirApplication\SmartFhirApplication\obj\Debug\netcoreapp2.1\SmartFhirApplication.csprojAssemblyReference.cache
