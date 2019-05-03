@@ -90,8 +90,8 @@ namespace SmartFhirApplication.Controllers
             var bitArr = GetBinaryFile("results/" + title + " for Patient_01.pdf");
             //Make XMLdoc
             //createXML1(title);
-            createXML1();
-            CreateXMLtake2(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
+            //createXML1();
+            //CreateXMLtake2(title, Procedure, ClinicalInformation, Comparison, Findings, Impression, PatientInfo);
             //XMLController.ReportDocumentXML();
 
             return Convert.ToBase64String(bitArr); 
@@ -270,6 +270,7 @@ namespace SmartFhirApplication.Controllers
                 doc.Add(titleParagraph);
                 doc.Add(patientParagraph);
                 doc.Add(procedureParagraph);
+                doc.Add(ciParagraph);
                 doc.Add(comparisonParagraph);
                 doc.Add(findingsParagraph);
                 doc.Add(impressionParagraph);
