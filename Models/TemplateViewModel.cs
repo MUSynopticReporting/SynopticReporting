@@ -18,22 +18,5 @@ namespace SmartFhirApplication.Models
     public string Code { get; set; }
     public string Header { get; set; }
   }
-
-  public class XmlModel
-    {
-        [XmlRoot("ClinicalDocument")]
-        public class Data
-        {
-            [XmlElement("component")]
-            public TemplateViewModel TemplateViewModel { get; set; }
-           // public templateId templateId { get; set; }
-        }
-      //  [SerializableAttribute()]
-      //  public class TemplateViewModel
-    //    {
-   //         [XmlElementAttribute()]
-     //       public 
-    //    }
-    }
     
 }

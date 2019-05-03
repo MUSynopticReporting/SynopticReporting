@@ -85,9 +85,11 @@ $("#submit").click(function submit(e) {
                 "data": data,
                 "title": title,
             }
-            xmlDoc = {
+        /*    xmlDoc = {
                 "contentType": "text/xml",
+                data: xmlString, 
             }
+            */
             var coding = {
                 "code": "18748-4",
                 "display": "Diagnostic Imaging Report",
@@ -143,7 +145,7 @@ $("#submit").click(function submit(e) {
     });
 
 });
-
+/*
 function json2xml(o, tab) {
     var toXml = function (v, name, ind) {
         var xml = "";
@@ -171,7 +173,7 @@ function json2xml(o, tab) {
     }
     return " "+xml+" ";
 }
-
+*/
 
 function loadView() {
     var e = document.getElementById("viewSelected");
@@ -188,7 +190,6 @@ function loadView() {
     })
 }
 document.getElementById("viewLoader").addEventListener("click", loadView);
-//XMLDocument docXML = new XMLDocument(loadView);   //I don't think I can do this 
 
 
 // Ok template 16 sucks
